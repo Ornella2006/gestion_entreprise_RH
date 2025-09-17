@@ -1,0 +1,151 @@
+ETUDES DE BESOINS 
+    1- Formulaire de demande de recrutement
+        Acteurs 
+            manager operationnelle
+            assistant du manager (mais demande de confirmation du manager)
+            HRBP
+        Entree 
+            -Information de base sur le poste
+            Intitule du poste (liste deroulante)
+            Service / Direction (liste deroulante)
+            Type de besoins 
+                creation de poste
+                remplacement
+                cdd/mission temporaire
+                alternance/stage
+            Justification(text)
+            - Description mission
+            Resume du poste
+            Missions principales
+            -Profil a rechercher
+            Formation
+            Experience
+            Competence technique
+            Savoir etre (soft skill)
+            - Condition de travail et renumeration
+            Type de contrat
+            Temps de travail
+            Lieu de travaill
+            Regime de travail (presentielle,teletravail)
+            Fourchette salariale proposee
+        Scenario nominal
+            Connexion du demandeur a l'app
+            Acces au tableau de bord
+            Clique "nouvelle demande de recrutement"
+            Remplir le formulaire
+            Soumettre la demande: verouille et envoye
+        Scenario alternatif
+        Resultat
+            Notification envoye un a un aux validateurs (ajout d'un demande de recrutement)
+            Modification du statu de la demande 
+        Regle de gestion
+            user avec des droits d'acces aux fonctionnalites de demande de recrutement
+    2- Validation de la demande de recrutement
+        Acteur: Manager du demandeur
+                direction finance        
+        Entree:
+            Boutons d'action : approuver,rejeter, demander des modifications
+            Commentaire (optionnel)
+        Scenario nominal
+            Connexion
+            Acces au tableau de bord 
+            Clique sur notification + valider,rejeter, a modifier
+        Scenario alternatif
+        Resultat 
+            Notifie le manager et le recruteur de la validation
+        Regle de gestion 
+
+    3- Creation de l'annonce
+        Acteur : Recruteur
+        Entree :
+            Login du recruteur
+            Modification selon les gouts et le profil du recrutement
+            Remplissage automatique des profils a recrute
+        Scenario nominal :
+            Le recruteur se connecte a l'appli et trouve la demande dans son espace "Recrutement a lancer"
+            Clique sur "creer l'annonce"
+            Le systeme pre-remplit : intitule du poste, missions principale, profil recherche, informatin sur le service et localisation 
+            Le recruteur complete et embelli l'annonce 
+            Clique sur "soumettre l'annonce"
+        Scenario alternatif 
+        Resultat :
+            Statu en attente de validation du manager 
+        Regle de gestion :
+            Le recruteur et manager doit avoir une pre-vision de l'annonce avant de publier l'annonce
+    
+    4- Validation de l'annonce 
+        Acteur : Manager 
+        Entree : Bouton de validation de l'annonce 
+        Resultat : 
+            Statut de l'annonce confirme et notifie le recruteur et manager 
+            Distribution automatique de l'annonce 
+            Un lien est creer pour suivre la candidature
+    
+    5- Demande de candidature
+        Acteur : candidat 
+        Entree :
+            Nom,prenom,adresse E-mail , Telephone,Adresse : rue,code postal,ville,pays ,civilite (marie,etc),sexe,date de naissance, lien vers un profile linkedin
+            Statu actuel (liste deroulante) : en poste, a la recherche,sans emploi,etudiant,..
+            Pretention scalariale brute annuelle (liste deroulante)
+            Niveau d'etude (liste deroulante)
+            Dernier diplome obtenu (liste deroulante)
+            Competence techniques (libre ou liste deroulante) + niveau de maitrise      
+            Langue : selection + niveau (liste deroulante)
+            Ajout experience ( optionnels) : nom entreprise,poste,date debut et fin,missions
+            Info complementaire (optionnels)
+        Scenario nominal : 
+            le candidat entre dans le site
+            Clique sur postuler
+            Rempli le formulaire 
+            Clique sur  "Envoyer ma candidature"
+        Scenario alternatif :
+        Resultat : 
+            La fiche du candidat arruve dans la base de donnees de l'application
+    
+
+6-apres remplissage du formulaire
+-envoyer le formulaire vers le site
+-mettre condition  de l'automatisation selon le profil rechercher 
+   .definir les profils importants 
+   .redirection immédiate après le formulaire  vers une page de test en ligne 
+      .else rien
+
+-test en ligne 
+   .qcm test de logique:par RH et 
+   .qcm selon filiaire [par expert metier exemples developpeur]
+   .ce serait noter 
+
+-les notes +de 10 feront les entretien
+   .les notes < 10 seront rediriger vers une page de remerciement
+   .entretien en ligne:
+      .entretien textuel
+      .Manuel (chat avec un recruteur en direct)
+      Un recruteur humain se connecte et échange en direct par chat avec le candidat.
+      Les réponses sont évaluées en temps réel.
+         Les réponses sont toujours stockées.
+         et apres l'entretien textuel (fait par le RH):on definit si c\est bon/mauvais/mpyen 
+
+         Étape 1 : Notation du test
+
+QCM corrigé automatiquement → note sur 20
+
+🔹 Étape 2 : Notation de l’entretien
+Entretien textuel évalué par un recruteur → score qualitatif converti en points
+Bon → 15/20
+Moyen → 10/20
+Mauvais → 5/20
+
+🔹 Étape 3 : systeme de scoring final
+ScoreFinal=NoteTest+NoteEntretien/2
+
+🔹 Étape 4 : Décision finale
+      et on choisie manuellement celui qui va faire le CD(pas plus de 6 mois) selon note final et dossier du candidat
+      et on envoie un mail automatique au candidat pour lui dire le resultat de l'entretien
+         
+
+
+Periode d'essaie : candidat - > employe
+                    Dans la periode d'essaie
+                    
+
+                    
