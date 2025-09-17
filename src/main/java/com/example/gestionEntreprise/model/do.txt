@@ -1,0 +1,16 @@
+Anita:
+-formulaire demande de recrutement
+-annonce 
+
+Ornella:
+-demande de candidature
+-filtrage
+
+Sariaka:
+-test
+-entretien
+
+
+Dera:
+-scoring final
+-decision final
