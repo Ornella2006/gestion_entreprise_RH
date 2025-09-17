@@ -1,4 +1,4 @@
--- ==========================================
+n-- ==========================================
 -- PostgreSQL Script: Simplified HR Management Database
 -- ==========================================
 
@@ -286,24 +286,23 @@ CREATE TABLE Candidate_Test (
     candidate_score INT
 );
 
+
+CREATE TABLE Qualitative_Score (
+    qualitative_score VARCHAR(20) PRIMARY KEY,
+    numeric_score INT NOT NULL
+);
+
 -- ----------------------
 -- Table Interview
 -- ----------------------
 CREATE TABLE Interview (
     idInterview SERIAL PRIMARY KEY,
     idJob_Application INT REFERENCES Job_Application(idJob_Application),
-    interview_type VARCHAR(50),  -- Ex. text, manual
+    interview_type VARCHAR(50),
     interview_date DATE,
     interview_time TIME,
-    qualitative_score VARCHAR(20),  -- Added: Bon, Moyen, Mauvais
-    numeric_score INT GENERATED ALWAYS AS (
-        CASE qualitative_score
-            WHEN 'Bon' THEN 15
-            WHEN 'Moyen' THEN 10
-            WHEN 'Mauvais' THEN 5
-            ELSE 0
-        END
-    ) STORED
+    qualitative_score VARCHAR(20)
+    -- On ne stocke plus numeric_score ici
 );
 
 -- ----------------------
