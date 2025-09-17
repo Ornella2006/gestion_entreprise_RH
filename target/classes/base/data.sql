@@ -14,6 +14,7 @@ CREATE TABLE Status (
 -- ----------------------
 -- Table Person
 -- ----------------------
+CREATE TYPE marital_status_type AS ENUM ('single', 'married', 'divorced', 'widowed');
 CREATE TABLE Person (
     idPerson SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -25,7 +26,7 @@ CREATE TABLE Person (
     gender VARCHAR(10),
     email VARCHAR(100) UNIQUE,
     driver_license BOOLEAN DEFAULT FALSE,
-    marital_status VARCHAR(50)  -- Added for candidate form (civilite)
+    marital_status marital_status_type
 );
 
 -- ----------------------
@@ -120,13 +121,21 @@ CREATE TABLE Level (
 -- ----------------------
 -- Table Candidate
 -- ----------------------
+CREATE TYPE candidate_status_type AS ENUM (
+    'employed',
+    'seeking',
+    'student',
+    'freelancer',
+    'other'
+);
+
 CREATE TABLE Candidate (
     idCandidate SERIAL PRIMARY KEY,
     idPerson INT REFERENCES Person(idPerson),
-    current_status VARCHAR(50),  -- Ex. en poste, à la recherche, étudiant
+    current_status candidate_status_type,  -- Uses ENUM for selection
     idEducation_Level INT REFERENCES Education_Level(idEducation_Level),
     idLast_Degree INT REFERENCES Degree(idDegree),
-    expected_salary_min NUMERIC,  -- Added: Numeric for salary comparisons
+    expected_salary_min NUMERIC,
     expected_salary_max NUMERIC,
     additional_info TEXT
 );
@@ -248,9 +257,17 @@ CREATE TABLE Job_Application (
 -- ----------------------
 -- Table Test
 -- ----------------------
+CREATE TYPE test_type_enum AS ENUM (
+    'logic',
+    'technical',
+    'psychometric',
+    'language',
+    'other'
+);
+
 CREATE TABLE Test (
     idTest SERIAL PRIMARY KEY,
-    test_type VARCHAR(50),  -- Ex. logic, technical
+    test_type test_type_enum,  -- Uses ENUM for selection
     max_score INT,
     test_date DATE
 );
@@ -313,9 +330,7 @@ CREATE TABLE Final_Score (
     idJob_Application INT REFERENCES Job_Application(idJob_Application),
     test_score INT,
     interview_score INT,
-    final_score NUMERIC GENERATED ALWAYS AS (
-        (test_score + interview_score) / 2.0
-    ) STORED
+    final_score Numeric(5,2)
 );
 
 -- ----------------------
