@@ -64,25 +64,8 @@ CREATE TABLE Actor (
 -- ----------------------
 -- Table Employee
 -- ----------------------
-CREATE TABLE Employee (
-    idEmployee SERIAL PRIMARY KEY,
-    idCandidate INT REFERENCES Candidate(idCandidate),
-    idActor INT REFERENCES Actor(idActor),
-    hire_date DATE,
-    start_probation_date DATE,
-    end_probation_date DATE,
-    idProbation_Status INT REFERENCES Probation_Status(idProbation_Status)
-);
 
--- ----------------------
--- Table User
--- ----------------------
-CREATE TABLE "User" (
-    idUser SERIAL PRIMARY KEY,
-    idEmployee INT REFERENCES Employee(idEmployee),
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
-);
+
 
 -- ----------------------
 -- Table City
@@ -209,6 +192,27 @@ CREATE TABLE Candidate (
     additional_info TEXT
 );
 
+CREATE TABLE Employee (
+    idEmployee SERIAL PRIMARY KEY,
+    idCandidate INT REFERENCES Candidate(idCandidate),
+    idActor INT REFERENCES Actor(idActor),
+    hire_date DATE,
+    start_probation_date DATE,
+    end_probation_date DATE,
+    idProbation_Status INT REFERENCES Probation_Status(idProbation_Status)
+);
+
+
+
+-- ----------------------
+-- Table User
+-- ----------------------
+CREATE TABLE "User" (
+    idUser SERIAL PRIMARY KEY,
+    idEmployee INT REFERENCES Employee(idEmployee),
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
 -- ----------------------
 -- Table Recruitment_Request
 -- ----------------------
@@ -295,6 +299,14 @@ CREATE TABLE Assessment (
 );
 
 -- ----------------------
+-- Table Test_Type
+-- ----------------------
+CREATE TABLE Test_Type (
+    idTest_Type SERIAL PRIMARY KEY,
+    test_type_name VARCHAR(100) NOT NULL
+);
+
+-- ----------------------
 -- Table Assessment_Question
 -- ----------------------
 CREATE TABLE Assessment_Question (
@@ -315,6 +327,15 @@ CREATE TABLE Assessment_Answer (
 );
 
 -- ----------------------
+-- Table Assessment_Result
+-- ----------------------
+CREATE TABLE Assessment_Result (
+    idAssessment_Result SERIAL PRIMARY KEY,
+    idJob_Application INT REFERENCES Job_Application(idJob_Application),
+    result_score INT
+);
+
+-- ----------------------
 -- Table Candidate_Answers_Test
 -- ----------------------
 CREATE TABLE Candidate_Answer_Test (
@@ -326,22 +347,9 @@ CREATE TABLE Candidate_Answer_Test (
     candidate_score INT
 );
 
--- ----------------------
--- Table Assessment_Result
--- ----------------------
-CREATE TABLE Assessment_Result (
-    idAssessment_Result SERIAL PRIMARY KEY,
-    idJob_Application INT REFERENCES Job_Application(idJob_Application),
-    result_score INT
-);
 
--- ----------------------
--- Table Test_Type
--- ----------------------
-CREATE TABLE Test_Type (
-    idTest_Type SERIAL PRIMARY KEY,
-    test_type_name VARCHAR(100) NOT NULL
-);
+
+
 
 -- ----------------------
 -- Table Interview_Type
