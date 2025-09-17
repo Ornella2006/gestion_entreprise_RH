@@ -58,7 +58,7 @@ ETUDES DE BESOINS
     3- Creation de l'annonce
         Acteur : Recruteur
         Entree :
-            Login du recruteur
+.            Login du recruteur
             Modification selon les gouts et le profil du recrutement
             Remplissage automatique des profils a recrute
         Scenario nominal :
