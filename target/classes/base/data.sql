@@ -1,8 +1,8 @@
 -- ==========================================
 -- PostgreSQL Script: HR Management Database (All Tables, English)
 -- ==========================================
-CREATE DATABASE gde;
-\c gde;
+CREATE DATABASE gestion_entreprise;
+\c gestion_entreprise;
 -- ----------------------
 -- Table Status
 -- ----------------------
