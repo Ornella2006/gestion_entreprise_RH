@@ -1,5 +1,5 @@
 -- ==========================================
--- PostgreSQL Script: HR Management Database (All Tables, English)
+-- PostgreSQL Script: HR Management Database (Updated with Dynamic Criteria)
 -- ==========================================
 CREATE DATABASE gestion_entreprise;
 \c gestion_entreprise;
@@ -210,7 +210,7 @@ CREATE TABLE Candidate (
 );
 
 -- ----------------------
--- Table Recruitment_Request
+-- Table Recruitment_Request (Updated: Removed static criteria fields)
 -- ----------------------
 CREATE TABLE Recruitment_Request (
     idRecruitment_Request SERIAL PRIMARY KEY,
@@ -228,6 +228,31 @@ CREATE TABLE Recruitment_Request (
     idCity INT REFERENCES City(idCity),
     salary_range VARCHAR(50),
     idStatus INT REFERENCES Status(idStatus)
+);
+
+-- ----------------------
+-- Table Criteria_Mapping (New: Maps criteria to table columns dynamically)
+-- ----------------------
+CREATE TABLE Criteria_Mapping (
+    idCriteria_Mapping SERIAL PRIMARY KEY,
+    criteria_type VARCHAR(50) UNIQUE NOT NULL,
+    table_name VARCHAR(50) NOT NULL,
+    column_name VARCHAR(50) NOT NULL,
+    data_type VARCHAR(20) NOT NULL,
+    default_operator VARCHAR(10) DEFAULT '='
+);
+
+-- ----------------------
+-- Table Recruitment_Criteria_Priority (New: Stores priority criteria for each request)
+-- ----------------------
+CREATE TABLE Recruitment_Criteria_Priority (
+    idCriteria_Priority SERIAL PRIMARY KEY,
+    idRecruitment_Request INT REFERENCES Recruitment_Request(idRecruitment_Request),
+    criteria_type VARCHAR(50) NOT NULL,
+    criteria_value VARCHAR(255),
+    operator VARCHAR(10) DEFAULT '=',
+    is_mandatory BOOLEAN DEFAULT TRUE,
+    CONSTRAINT fk_criteria_type FOREIGN KEY (criteria_type) REFERENCES Criteria_Mapping(criteria_type)
 );
 
 -- ----------------------
@@ -304,7 +329,7 @@ CREATE TABLE Assessment_Question (
 );
 
 -- ----------------------
--- Table Assessment_Answers
+-- Table Assessment_Answer
 -- ----------------------
 CREATE TABLE Assessment_Answer (
     idAssessment_Answer SERIAL PRIMARY KEY,
@@ -315,7 +340,7 @@ CREATE TABLE Assessment_Answer (
 );
 
 -- ----------------------
--- Table Candidate_Answers_Test
+-- Table Candidate_Answer_Test
 -- ----------------------
 CREATE TABLE Candidate_Answer_Test (
     idCandidate_Answer_Test SERIAL PRIMARY KEY,
@@ -405,3 +430,88 @@ CREATE TABLE Final_Selection (
     idFinal_Selection SERIAL PRIMARY KEY,
     idJob_Application INT REFERENCES Job_Application(idJob_Application)
 );
+
+-- ----------------------
+-- Function: get_matching_candidates_dynamic
+-- ----------------------
+CREATE OR REPLACE FUNCTION get_matching_candidates_dynamic(p_idRecruitment_Request INT)
+RETURNS TABLE (
+    idCandidate INT,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    gender VARCHAR(10),
+    level_name VARCHAR(100)
+) AS $$
+DECLARE
+    condition_text TEXT := '';
+    rec RECORD;
+BEGIN
+    -- Construire la clause WHERE dynamiquement
+    FOR rec IN 
+        SELECT 
+            rcp.criteria_type,
+            rcp.criteria_value,
+            COALESCE(rcp.operator, cm.default_operator) AS operator,
+            cm.table_name,
+            cm.column_name,
+            cm.data_type
+        FROM Recruitment_Criteria_Priority rcp
+        JOIN Criteria_Mapping cm ON rcp.criteria_type = cm.criteria_type
+        WHERE rcp.idRecruitment_Request = p_idRecruitment_Request
+        AND rcp.is_mandatory = TRUE
+    LOOP
+        IF condition_text != '' THEN
+            condition_text := condition_text || ' AND ';
+        END IF;
+
+        -- Gérer les différents types de données et opérateurs
+        IF rec.data_type = 'DATE' AND rec.criteria_type = 'min_age' THEN
+            condition_text := condition_text || 'DATE_PART(''year'', AGE(CURRENT_DATE, p.' || quote_ident(rec.column_name) || ')) ' || rec.operator || ' ' || quote_literal(rec.criteria_value)::TEXT;
+        ELSE
+            condition_text := condition_text || 
+                CASE rec.table_name
+                    WHEN 'Person' THEN 'p.' || quote_ident(rec.column_name)
+                    WHEN 'Candidate' THEN 'c.' || quote_ident(rec.column_name)
+                    ELSE 'FALSE'
+                END || ' ' || rec.operator || ' ' ||
+                CASE rec.data_type
+                    WHEN 'INT' THEN quote_literal(rec.criteria_value)::TEXT
+                    WHEN 'TEXT' THEN quote_literal(rec.criteria_value)
+                    WHEN 'BOOLEAN' THEN quote_literal(rec.criteria_value)::TEXT
+                    ELSE quote_literal(rec.criteria_value)
+                END;
+        END IF;
+    END LOOP;
+
+    -- Si aucun critère, retourner TRUE (tous les candidats)
+    IF condition_text = '' THEN
+        condition_text := 'TRUE';
+    END IF;
+
+    -- Exécuter la requête dynamique
+    RETURN QUERY EXECUTE '
+        SELECT 
+            c.idCandidate,
+            p.first_name,
+            p.last_name,
+            p.gender,
+            el.level_name
+        FROM Candidate c
+        JOIN Person p ON c.idPerson = p.idPerson
+        JOIN Education_Level el ON c.idEducation_Level = el.idEducation_Level
+        WHERE ' || condition_text;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ----------------------
+-- Initial Data for Criteria_Mapping
+-- ----------------------
+INSERT INTO Criteria_Mapping (criteria_type, table_name, column_name, data_type, default_operator) VALUES
+    ('gender', 'Person', 'gender', 'TEXT', '='),
+    ('education_level', 'Candidate', 'idEducation_Level', 'INT', '='),
+    ('min_age', 'Person', 'birth_date', 'DATE', '>='),
+    ('city', 'Person', 'city', 'TEXT', 'ILIKE'),
+    ('skill_level', 'Candidate', 'idSkill_Level', 'INT', '='),
+    ('language_level', 'Candidate', 'idLanguage_Level', 'INT', '='),
+    ('driver_license', 'Person', 'driver_license', 'BOOLEAN', '='),
+    ('expected_salary', 'Candidate', 'expected_salary', 'TEXT', '=');
