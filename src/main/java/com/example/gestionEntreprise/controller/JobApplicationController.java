@@ -1,4 +1,4 @@
-/* package com.example.gestionEntreprise.controller;
+package com.example.gestionEntreprise.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,9 +13,10 @@ public class JobApplicationController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
             // Redirige vers la page de login
-            return "redirect:/login";
+            return "candidate/auth_candidate";
         }
         // Si connecté, affiche le formulaire
         return "candidate/candidature_form";
     }
-} */
+
+}

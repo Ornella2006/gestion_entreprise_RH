@@ -16,6 +16,7 @@ CREATE TABLE Status (
 -- Table Person
 -- ----------------------
 CREATE TYPE marital_status_type AS ENUM ('single', 'married', 'divorced', 'widowed');
+
 CREATE TABLE Person (
     idPerson SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -55,7 +56,7 @@ CREATE TABLE Employee (
 -- ----------------------
 -- Table User
 -- ----------------------
-CREATE TABLE "User" (
+CREATE TABLE "user" (
     idUser SERIAL PRIMARY KEY,
     idEmployee INT REFERENCES Employee(idEmployee),
     username VARCHAR(50) UNIQUE NOT NULL,
