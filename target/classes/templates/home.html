@@ -1,16 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Accueil</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/company/home.css}">
+
 </head>
 <body>
-    <ul>
-        <li><a href="/candidate">Candidate</a></li>
-        <li><a href="/companyLogin">Company</a></li>
-    </ul>
-    
-    
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Company</h5>
+                    <a href="/company" class="btn btn-primary">Accès Admin</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Candidate</h5>
+                    <a href="/candidate" class="btn btn-success">Accès Client</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
