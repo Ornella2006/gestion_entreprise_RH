@@ -68,7 +68,7 @@ body {
     width: 90vw;
     max-width: 850px;
     min-width: 320px;
-    height: auto;
+    height: 600px;
     background: #fff;
     border-radius: 30px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
@@ -96,7 +96,7 @@ body {
     justify-content: center;
     transition: all 0.6s ease-in-out;
     top: 0;
-    background: #333; /* Fond blanc important */
+    background: #fff; /* Fond blanc */
 }
 
 .form-box.login {
@@ -276,20 +276,20 @@ h1 {
         width: 98vw;
         max-width: 98vw;
         min-width: 0;
-        height: auto;
+        height: 100vh;
         margin: 10px auto;
         border-radius: 18px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .form-box {
         width: 100%;
-        height: auto;
+        height: 100%;
         padding: 20px;
         position: relative;
     }
     .toggle-box {
         width: 100%;
-        height: auto;
+        height: 100%;
         position: relative;
         border-radius: 0 0 18px 18px;
     }

@@ -10,13 +10,6 @@ public class JobApplicationController {
 
     @GetMapping("/demandeCandidature")
     public String showFormJobApplication() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-            // Redirige vers la page de login
-            return "candidate/auth_candidate";
-        }
-        // Si connecté, affiche le formulaire
         return "candidate/candidature_form";
     }
-
 }

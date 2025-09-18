@@ -13,23 +13,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf.disable())  // Désactive CSRF pour simplifier
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/candidate", "/candidate/**", "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/demandeCandidature", "/postuler").authenticated()
+                .requestMatchers("/", "/home", "/candidate", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/demandeCandidature").authenticated()
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form
-                .loginPage("/auth")
-                .loginProcessingUrl("/auth")
-                .defaultSuccessUrl("/demandeCandidature", true)
-                .permitAll()
-            )
-            .logout(logout -> logout
-                // .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
+                .loginPage("/candidate/auth")  // URL de ta page de login personnalisée
+                .loginProcessingUrl("/candidate/auth")  // URL qui traite le login
+                .defaultSuccessUrl("/candidate")
                 .permitAll()
             );
+        
         return http.build();
     }
-    
 }
