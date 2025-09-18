@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle != null ? pageTitle : 'RH Solutions Pro - Votre partenaire RH'}">RH Solutions Pro</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/candidate/accueil.css}">
+
+</head>
+
+<body>
+     <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#" th:href="@{/}">
+                <i class="bi bi-people-fill me-2"></i>
+                <span th:text="${companyName != null ? companyName : 'RH Solutions Pro'}">RH Solutions Pro</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/candidate">Accueil</a>
+                    </li>
+                 
+                    <li class="nav-item">
+                        <a class="nav-link" href="/annonces">Annonces</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/demandeCandidature">Candidature</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary ms-2" href="#" th:href="@{/login}">Espace Client</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div layout:fragment="content">
+            <!-- Ici s’insère le contenu des pages enfants -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                   
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light" th:if="${social?.linkedin}"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="text-light" th:if="${social?.twitter}"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-light" th:if="${social?.facebook}"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2">
+                    <h6 class="mb-3">Services</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Recrutement</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Formation</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Paie</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Conseil</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2">
+                    <h6 class="mb-3">Entreprise</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">À propos</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Équipe</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Carrières</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Actualités</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2">
+                    <h6 class="mb-3">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Contact</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">FAQ</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Documentation</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Support</a></li>
+                    </ul>
+                </div>
+
+
+                <div class="col-lg-2">
+                    <h6 class="mb-3">Légal</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Mentions légales</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Politique de confidentialité</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">CGU</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">RGPD</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4 text-light">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-light">
+                        © <span th:text="${#dates.year(#dates.createNow())}">2024</span> 
+                        <span th:text="${companyName ?: 'RH Solutions Pro'}">RH Solutions Pro</span>. 
+                        Tous droits réservés.
+                    </p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0 text-light">
+                        Développé avec 
+                        <i class="bi bi-heart-fill text-danger"></i> 
+                        par notre équipe
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        
+    <!-- Custom JavaScript -->
+    <script src="js/candidate/accueil.js"></script>
+   
+    <!-- Thymeleaf JavaScript variables -->
+    <script th:inline="javascript">
+        // Variables Thymeleaf disponibles en JavaScript
+        var companyData = {
+            name: /*[[${companyName}]]*/ 'RH Solutions Pro',
+            email: /*[[${contact?.email}]]*/ 'contact@rhsolutionspro.fr',
+            phone: /*[[${contact?.phone}]]*/ '+33 1 23 45 67 89'
+        };
+        
+        // Messages d'alerte conditionnels
+        /*[+
+        if (${successMessage}) {
+            document.addEventListener('DOMContentLoaded', function() {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+                alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
+                alertDiv.innerHTML = `
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    [[${successMessage}]]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                document.body.appendChild(alertDiv);
+                
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 5000);
+            });
+        }
+        +]*/
+        
+        /*[+
+        if (${errorMessage}) {
+            document.addEventListener('DOMContentLoaded', function() {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+                alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
+                alertDiv.innerHTML = `
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    [[${errorMessage}]]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                document.body.appendChild(alertDiv);
+            });
+        }
+        +]*/
+    </script>
+
+</body>
+
+ 
+</html>
