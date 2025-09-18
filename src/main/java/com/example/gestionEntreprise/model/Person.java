@@ -10,8 +10,8 @@ public class Person {
     private Long idPerson;
 
     @ManyToOne
-    @JoinColumn(name = "idSituation")
-    private Situation situation;
+    @JoinColumn(name = "idMarital_Status")
+    private MaritalStatus maritalStatus;
 
     @Column(nullable = false, length = 100)
     private String firstName;
@@ -42,8 +42,8 @@ public class Person {
     // Getters and setters
     public Long getIdPerson() { return idPerson; }
     public void setIdPerson(Long idPerson) { this.idPerson = idPerson; }
-    public Situation getSituation() { return situation; }
-    public void setSituation(Situation situation) { this.situation = situation; }
+    public MaritalStatus getMaritalStatus() { return maritalStatus; }
+    public void setMaritalStatus(MaritalStatus maritalStatus) { this.maritalStatus = maritalStatus; }
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public String getLastName() { return lastName; }
