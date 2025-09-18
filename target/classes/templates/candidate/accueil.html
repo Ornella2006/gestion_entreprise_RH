@@ -1,0 +1,115 @@
+   
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{candidate/template}">
+    <body>
+        <div layout:fragment="content">
+                <section id="services" class="py-5">
+                    <div class="container">
+                        <div class="row g-4">
+                            <div class="col-lg-4 col-md-6" th:each="service : ${services}">
+                                <div class="card card-service h-100">
+                                    <div class="card-body text-center p-4">
+                                        <div class="feature-icon">
+                                            <i class="bi" th:class="${service.icon}" th:if="${service?.icon}"></i>
+                                            <i class="bi bi-briefcase-fill" th:unless="${service?.icon}"></i>
+                                        </div>
+                                        <h5 class="card-title" th:text="${service?.title}">Recrutement</h5>
+                                        <p class="card-text text-muted" th:text="${service?.description}">
+                                            Identification et sélection des meilleurs talents pour cette entreprise
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Services par défaut si aucune donnée n'est fournie -->
+                            <div class="col-lg-4 col-md-6" th:unless="${services}">
+                                <div class="card card-service h-100">
+                                    <div class="card-body text-center p-4">
+                                        <div class="feature-icon">
+                                            <i class="bi bi-person-plus-fill"></i>
+                                        </div>
+                                        <h5 class="card-title">Recrutement & Sélection</h5>
+                                        <p class="card-text text-muted">
+                                            Identification et sélection des meilleurs talents pour cette entreprise
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4 col-md-6" th:unless="${services}">
+                                <div class="card card-service h-100">
+                                    <div class="card-body text-center p-4">
+                                        <div class="feature-icon">
+                                            <i class="bi bi-graph-up-arrow"></i>
+                                        </div>
+                                        <h5 class="card-title">Formation & Développement</h5>
+                                        <p class="card-text text-muted">
+                                            Programmes de formation sur mesure pour développer les compétences
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </section>
+
+            
+
+                <!-- Process Section -->
+                <section id="processus" class="py-5">
+                    <div class="container">
+                        <div class="row mb-5">
+                            <div class="col-lg-8 mx-auto text-center">
+                                <h2 class="display-5 fw-bold mb-3">Notre Processus</h2>
+                                <p class="lead text-muted">Une approche structurée pour des résultats optimaux</p>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-4">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="process-step">
+                                    <div class="feature-icon mb-3">
+                                        <i class="bi bi-search"></i>
+                                    </div>
+                                    <h5>Analyse</h5>
+                                    <p class="text-muted">Évaluation approfondie de vos besoins et contraintes RH</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-3 col-md-6">
+                                <div class="process-step">
+                                    <div class="feature-icon mb-3">
+                                        <i class="bi bi-lightbulb"></i>
+                                    </div>
+                                    <h5>Stratégie</h5>
+                                    <p class="text-muted">Élaboration d'une stratégie RH sur mesure et adaptée</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-3 col-md-6">
+                                <div class="process-step">
+                                    <div class="feature-icon mb-3">
+                                        <i class="bi bi-gear"></i>
+                                    </div>
+                                    <h5>Mise en Œuvre</h5>
+                                    <p class="text-muted">Implémentation des solutions avec accompagnement</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-3 col-md-6">
+                                <div class="process-step">
+                                    <div class="feature-icon mb-3">
+                                        <i class="bi bi-graph-up"></i>
+                                    </div>
+                                    <h5>Suivi</h5>
+                                    <p class="text-muted">Monitoring et optimisation continue des résultats</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+        </div>
+    </body>
+</html>
+   
