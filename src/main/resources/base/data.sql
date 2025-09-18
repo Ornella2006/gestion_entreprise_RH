@@ -1,7 +1,8 @@
-n-- ==========================================
+-- ==========================================
 -- PostgreSQL Script: Simplified HR Management Database
 -- ==========================================
-
+CREATE DATABASE gestion_entreprise;
+\c gestion_entreprise;
 -- ----------------------
 -- Table Status (Use ENUM for simplicity)
 -- ----------------------
