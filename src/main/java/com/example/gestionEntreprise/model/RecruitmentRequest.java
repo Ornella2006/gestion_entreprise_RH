@@ -1,6 +1,7 @@
 package com.example.gestionEntreprise.model;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class RecruitmentRequest {
@@ -13,16 +14,15 @@ public class RecruitmentRequest {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "idProfile")
-    private Profile profile;
+    @JoinColumn(name = "idJob_Position")
+    private JobPosition jobPosition;
 
     @ManyToOne
     @JoinColumn(name = "idDepartment")
     private Department department;
 
-    @ManyToOne
-    @JoinColumn(name = "idNeed_Type")
-    private NeedType needType;
+    @Column(length = 50)
+    private String needType;
 
     @Column(columnDefinition = "TEXT")
     private String justification;
@@ -30,36 +30,50 @@ public class RecruitmentRequest {
     @Column(columnDefinition = "TEXT")
     private String mainMission;
 
-    @ManyToOne
-    @JoinColumn(name = "idFormation_Experience")
-    private FormationExperience formationExperience;
-
-    @ManyToOne
-    @JoinColumn(name = "idSkill_Level")
-    private SkillLevel skillLevel;
-
-    @ManyToOne
-    @JoinColumn(name = "idLanguage_Level")
-    private LanguageLevel languageLevel;
-
-    @ManyToOne
-    @JoinColumn(name = "idContract_Type")
-    private ContractType contractType;
+    @Column(length = 50)
+    private String contractType;
 
     @Column(length = 50)
     private String workingTime;
 
-    @ManyToOne
-    @JoinColumn(name = "idCity")
-    private City city;
+    @Column(length = 100)
+    private String city;
 
-    @Column(length = 50)
-    private String salaryRange;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal salaryMin;
 
-    @ManyToOne
-    @JoinColumn(name = "idStatus")
-    private Status status;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal salaryMax;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusType status;
 
     // Getters and setters
-    // ...
+    public Long getIdRecruitmentRequest() { return idRecruitmentRequest; }
+    public void setIdRecruitmentRequest(Long idRecruitmentRequest) { this.idRecruitmentRequest = idRecruitmentRequest; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+    public JobPosition getJobPosition() { return jobPosition; }
+    public void setJobPosition(JobPosition jobPosition) { this.jobPosition = jobPosition; }
+    public Department getDepartment() { return department; }
+    public void setDepartment(Department department) { this.department = department; }
+    public String getNeedType() { return needType; }
+    public void setNeedType(String needType) { this.needType = needType; }
+    public String getJustification() { return justification; }
+    public void setJustification(String justification) { this.justification = justification; }
+    public String getMainMission() { return mainMission; }
+    public void setMainMission(String mainMission) { this.mainMission = mainMission; }
+    public String getContractType() { return contractType; }
+    public void setContractType(String contractType) { this.contractType = contractType; }
+    public String getWorkingTime() { return workingTime; }
+    public void setWorkingTime(String workingTime) { this.workingTime = workingTime; }
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+    public BigDecimal getSalaryMin() { return salaryMin; }
+    public void setSalaryMin(BigDecimal salaryMin) { this.salaryMin = salaryMin; }
+    public BigDecimal getSalaryMax() { return salaryMax; }
+    public void setSalaryMax(BigDecimal salaryMax) { this.salaryMax = salaryMax; }
+    public StatusType getStatus() { return status; }
+    public void setStatus(StatusType status) { this.status = status; }
 }
