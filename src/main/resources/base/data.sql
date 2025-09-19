@@ -180,7 +180,7 @@ CREATE TABLE Experience (
 -- ----------------------
 CREATE TABLE Recruitment_Request (
     idRecruitment_Request SERIAL PRIMARY KEY,
-    idUser INT REFERENCES "User"(idUser),
+    idUser INT REFERENCES "user"(idUser),
     idJob_Position INT REFERENCES Job_Position(idJob_Position),
     idDepartment INT REFERENCES Department(idDepartment),
     need_type VARCHAR(50),  -- Simplified: Ex. creation, remplacement, cdd, stage
@@ -239,7 +239,7 @@ CREATE TABLE Validation (
     idValidation SERIAL PRIMARY KEY,
     idRecruitment_Request INT REFERENCES Recruitment_Request(idRecruitment_Request),
     idJob_Announcement INT REFERENCES Job_Announcement(idJob_Announcement),  -- NULL for request validation
-    idUser INT REFERENCES "User"(idUser),
+    idUser INT REFERENCES "user"(idUser),
     decision status_type,  -- Ex. approved, rejected, modify
     comment TEXT,
     validation_date TIMESTAMP DEFAULT NOW()
