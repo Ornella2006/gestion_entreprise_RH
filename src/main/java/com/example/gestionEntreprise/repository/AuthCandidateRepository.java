@@ -1,5 +1,9 @@
 package com.example.gestionEntreprise.repository;
 
-public class AuthCandidateRepository {
+
+public class AuthCandidateRepository  {
+  
     
 }
+
+

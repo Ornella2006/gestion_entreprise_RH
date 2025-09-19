@@ -51,6 +51,7 @@ C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\co
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\model\TestTypeEnum.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\model\User.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\AssessmentResultRepository.java
+C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\AuthCandidateRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\CandidateRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\EmployeeRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\FinalScoreRepository.java
@@ -63,6 +64,7 @@ C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\co
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\RecruitmentRequestRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\StatusRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\UserRepository.java
+C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\service\AuthCandidateService.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\service\CandidateService.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\service\EmployeeService.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\service\PersonService.java

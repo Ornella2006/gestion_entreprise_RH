@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name= "Person")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +40,9 @@ public class Person {
 
     private Boolean driverLicense = false;
 
+    @Transient
+    private String password;
+
     // Getters and setters
     public Long getIdPerson() { return idPerson; }
     public void setIdPerson(Long idPerson) { this.idPerson = idPerson; }
@@ -62,4 +66,12 @@ public class Person {
     public void setEmail(String email) { this.email = email; }
     public Boolean getDriverLicense() { return driverLicense; }
     public void setDriverLicense(Boolean driverLicense) { this.driverLicense = driverLicense; }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
