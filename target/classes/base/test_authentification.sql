@@ -13,7 +13,7 @@ INSERT INTO Employee (idPerson, idRole, hire_date, start_probation_date, end_pro
 VALUES
 (1, 1, '2024-01-10', '2024-01-10', '2024-07-10', 'approved'),
 (2, 2, '2023-03-05', '2023-03-05', '2023-09-05', 'approved');
-INSERT INTO "User" (idEmployee, username, password)
+INSERT INTO "user" (idEmployee, username, password)
 VALUES
 (1, 'alice_admin', 'admin123'),
 (2, 'bob_rh', 'rh123');

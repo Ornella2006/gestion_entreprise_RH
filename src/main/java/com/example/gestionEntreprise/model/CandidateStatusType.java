@@ -1,9 +1,9 @@
 package com.example.gestionEntreprise.model;
 
 public enum CandidateStatusType {
-    EMPLOYED,
-    SEEKING,
-    STUDENT,
-    FREELANCER,
-    OTHER
+    employed,
+    seeking,
+    student,
+    freelancer,
+    other
 }

@@ -14,7 +14,7 @@ public class StatusService {
     }
 
     public List<Status> getAll() { return statusRepository.findAll(); }
-    public Status getById(Long id) { return statusRepository.findById(id).orElse(null); }
+    public Status getById(Integer id) { return statusRepository.findById(id).orElse(null); }
     public Status save(Status status) { return statusRepository.save(status); }
-    public void delete(Long id) { statusRepository.deleteById(id); }
+    public void delete(Integer id) { statusRepository.deleteById(id); }
 }

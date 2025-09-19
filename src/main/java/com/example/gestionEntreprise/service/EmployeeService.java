@@ -24,16 +24,22 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Optional<Employee> findById(Long id) {
+    public Optional<Employee> findById(Integer id) {
         return employeeRepository.findById(id);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         employeeRepository.deleteById(id);
     }
 
     public Employee update(Employee employee) {
         return employeeRepository.save(employee);
     }
+
+    // public Integer getIdRoleByIdEmployee(Integer idEmployee){
+    //     return employeeRepository.findIdRoleByIdEmployee(idEmployee);
+    // }
+
+
 
 }

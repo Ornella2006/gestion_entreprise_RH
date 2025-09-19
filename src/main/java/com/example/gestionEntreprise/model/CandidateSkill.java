@@ -3,10 +3,12 @@ package com.example.gestionEntreprise.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "candidate_skill")
 public class CandidateSkill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCandidateSkill;
+    @Column(name = "idCandidate_skill")
+    private Integer idCandidateSkill;
 
     @ManyToOne
     @JoinColumn(name = "idCandidate")
@@ -21,8 +23,8 @@ public class CandidateSkill {
     private Level level;
 
     // Getters and setters
-    public Long getIdCandidateSkill() { return idCandidateSkill; }
-    public void setIdCandidateSkill(Long idCandidateSkill) { this.idCandidateSkill = idCandidateSkill; }
+    public Integer getIdCandidateSkill() { return idCandidateSkill; }
+    public void setIdCandidateSkill(Integer idCandidateSkill) { this.idCandidateSkill = idCandidateSkill; }
     public Candidate getCandidate() { return candidate; }
     public void setCandidate(Candidate candidate) { this.candidate = candidate; }
     public Skill getSkill() { return skill; }
