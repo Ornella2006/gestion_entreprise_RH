@@ -1,7 +1,14 @@
 package com.example.gestionEntreprise.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "person")
@@ -42,11 +49,13 @@ public class Person {
     @Transient
     private String password;
 
+    private MaritalStatusType maritalStatus;
+
     // Getters and setters
     public Long getIdPerson() { return idPerson; }
-    public void setIdPerson(Long idPerson) { this.idPerson = idPerson; }
-    public MaritalStatus getMaritalStatus() { return maritalStatus; }
-    public void setMaritalStatus(MaritalStatus maritalStatus) { this.maritalStatus = maritalStatus; }
+    public void setIdPerson(Long id) { this.idPerson = id; }
+    public MaritalStatusType getMaritalStatus() { return maritalStatus; }
+    public void setMaritalStatus(MaritalStatusType maritalStatus) { this.maritalStatus = maritalStatus; }
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public String getLastName() { return lastName; }
