@@ -3,27 +3,40 @@ package com.example.gestionEntreprise.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "\"user\"") // Échappement des guillemets pour le nom de table réservé
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUser;
+    @Column(name = "iduser")
+    private Integer idUser;
 
     @ManyToOne
-    @JoinColumn(name = "idEmployee")
+    @JoinColumn(name = "idemployee", referencedColumnName = "idemployee")
     private Employee employee;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(name = "username", unique = true, nullable = false, length = 50)
     private String username;
 
-    @Column(nullable = false, length = 255)
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    public Long getIdUser() {
+    // Constructeurs
+    public User() {
+    }
+
+    public User(Employee employee, String username, String password) {
+        this.employee = employee;
+        this.username = username;
+        this.password = password;
+    }
+
+    // Getters et Setters
+    public Integer getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Long idUser) {
+    public void setIdUser(Integer idUser) {
         this.idUser = idUser;
     }
 
@@ -49,5 +62,16 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    // Méthode toString()
+    @Override
+    public String toString() {
+        return "User{" +
+                "idUser=" + idUser +
+                ", employee=" + employee +
+                ", username='" + username + '\'' +
+                ", password='[PROTECTED]'" +
+                '}';
     }
 }

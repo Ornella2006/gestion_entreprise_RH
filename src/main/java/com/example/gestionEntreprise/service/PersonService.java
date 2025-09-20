@@ -14,7 +14,7 @@ public class PersonService {
     }
 
     public List<Person> getAll() { return personRepository.findAll(); }
-    public Person getById(Long id) { return personRepository.findById(id).orElse(null); }
+    public Person getById(Integer id) { return personRepository.findById(id).orElse(null); }
     public Person save(Person person) { return personRepository.save(person); }
-    public void delete(Long id) { personRepository.deleteById(id); }
+    public void delete(Integer id) { personRepository.deleteById(id); }
 }

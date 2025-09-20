@@ -1,43 +1,42 @@
 package com.example.gestionEntreprise.model;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Table(name= "Person")
+@Table(name = "person")
 public class Person {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idperson")
     private Long idPerson;
 
-    @ManyToOne
-    @JoinColumn(name = "idMarital_Status")
-    private MaritalStatus maritalStatus;
-
-    @Column(nullable = false, length = 100)
+    @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
-    @Column(length = 50)
+    @Column(name = "phone", length = 50)
     private String phone;
 
-    @Column(length = 100)
+    @Column(name = "city", length = 100)
     private String city;
 
-    @Column(length = 255)
+    @Column(name = "linkedin", length = 255)
     private String linkedin;
 
-    @Column(length = 10)
+    @Column(name = "gender", length = 10)
     private String gender;
 
-    @Column(length = 100, unique = true)
+    @Column(name = "email", unique = true, length = 100)
     private String email;
 
+    @Column(name = "driver_license")
     private Boolean driverLicense = false;
 
     @Transient
@@ -52,8 +51,8 @@ public class Person {
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
-    public Date getBirthDate() { return birthDate; }
-    public void setBirthDate(Date birthDate) { this.birthDate = birthDate; }
+    public LocalDate getBirthDate() { return birthDate; }
+    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
     public String getCity() { return city; }
@@ -74,4 +73,6 @@ public class Person {
     public void setPassword(String password) {
         this.password = password;
     }
+
+   
 }

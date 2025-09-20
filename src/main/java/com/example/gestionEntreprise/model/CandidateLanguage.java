@@ -3,10 +3,12 @@ package com.example.gestionEntreprise.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "candidate_language")
 public class CandidateLanguage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCandidateLanguage;
+    @Column(name = "idcandidate_language")
+    private Integer idCandidateLanguage;
 
     @ManyToOne
     @JoinColumn(name = "idCandidate")
@@ -21,8 +23,8 @@ public class CandidateLanguage {
     private Level level;
 
     // Getters and setters
-    public Long getIdCandidateLanguage() { return idCandidateLanguage; }
-    public void setIdCandidateLanguage(Long idCandidateLanguage) { this.idCandidateLanguage = idCandidateLanguage; }
+    public Integer getIdCandidateLanguage() { return idCandidateLanguage; }
+    public void setIdCandidateLanguage(Integer idCandidateLanguage) { this.idCandidateLanguage = idCandidateLanguage; }
     public Candidate getCandidate() { return candidate; }
     public void setCandidate(Candidate candidate) { this.candidate = candidate; }
     public Language getLanguage() { return language; }

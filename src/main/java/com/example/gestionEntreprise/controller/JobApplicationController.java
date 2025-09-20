@@ -13,3 +13,4 @@ public class JobApplicationController {
         return "candidate/candidature_form";
     }
 }
+

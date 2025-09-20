@@ -7,14 +7,15 @@ import java.math.BigDecimal;
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCandidate;
+    @Column(name = "idCandidate")
+    private Integer idCandidate;
 
     @ManyToOne
     @JoinColumn(name = "idPerson")
     private Person person;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "current_status", nullable = false)
     private CandidateStatusType currentStatus;
 
     @ManyToOne
@@ -25,18 +26,18 @@ public class Candidate {
     @JoinColumn(name = "idLast_Degree")
     private Degree lastDegree;
 
-    @Column(precision = 10, scale = 2)
+    @Column(precision = 10, scale = 2,name = "expected_salary_min")
     private BigDecimal expectedSalaryMin;
 
-    @Column(precision = 10, scale = 2)
+    @Column(precision = 10, scale = 2,name = "expected_salary_max")
     private BigDecimal expectedSalaryMax;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "additional_info", columnDefinition = "TEXT")
     private String additionalInfo;
 
     // Getters and setters
-    public Long getIdCandidate() { return idCandidate; }
-    public void setIdCandidate(Long idCandidate) { this.idCandidate = idCandidate; }
+    public Integer getIdCandidate() { return idCandidate; }
+    public void setIdCandidate(Integer idCandidate) { this.idCandidate = idCandidate; }
     public Person getPerson() { return person; }
     public void setPerson(Person person) { this.person = person; }
     public CandidateStatusType getCurrentStatus() { return currentStatus; }

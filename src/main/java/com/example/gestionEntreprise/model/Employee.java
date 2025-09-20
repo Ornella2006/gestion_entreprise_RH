@@ -7,7 +7,7 @@ import java.util.Date;
 public class Employee {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEmployee;
+    private Integer idEmployee;
 
     @ManyToOne
     @JoinColumn(name = "idPerson")
@@ -18,23 +18,26 @@ public class Employee {
     private Role role;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "hire_date")
     private Date hireDate;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "start_probation_date")
     private Date startProbationDate;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "end_probation_date")
     private Date endProbationDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false,name = "probation_status")
     private StatusType probationStatus;
 
     public Employee() {}
 
 
-    public Long getIdEmployee() { return idEmployee; }
-    public void setIdEmployee(Long idEmployee) { this.idEmployee = idEmployee; }
+    public Integer getIdEmployee() { return idEmployee; }
+    public void setIdEmployee(Integer idEmployee) { this.idEmployee = idEmployee; }
     public Person getPerson() { return person; }
     public void setPerson(Person person) { this.person = person; }
     public Role getRole() { return role; }

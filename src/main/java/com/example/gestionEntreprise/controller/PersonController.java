@@ -18,17 +18,17 @@ public class PersonController {
     public List<Person> getAll() { return personService.getAll(); }
 
     @GetMapping("/{id}")
-    public Person getById(@PathVariable Long id) { return personService.getById(id); }
+    public Person getById(@PathVariable Integer id) { return personService.getById(id); }
 
     @PostMapping
     public Person create(@RequestBody Person person) { return personService.save(person); }
 
     @PutMapping("/{id}")
-    public Person update(@PathVariable Long id, @RequestBody Person person) {
+    public Person update(@PathVariable Integer id, @RequestBody Person person) {
         person.setIdPerson(id);
         return personService.save(person);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) { personService.delete(id); }
+    public void delete(@PathVariable Integer id) { personService.delete(id); }
 }
