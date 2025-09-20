@@ -28,8 +28,10 @@ CREATE TABLE Person (
     gender VARCHAR(10),
     email VARCHAR(100) UNIQUE,
     driver_license BOOLEAN DEFAULT FALSE,
-    marital_status marital_status_type
+    marital_status marital_status_type,
+    photo_path varchar(255)
 );
+
 
 -- ----------------------
 -- Table Role
@@ -160,6 +162,16 @@ CREATE TABLE Candidate_Language (
     idCandidate INT REFERENCES Candidate(idCandidate),
     idLanguage INT REFERENCES Language(idLanguage),
     idLevel INT REFERENCES Level(idLevel)
+);
+
+CREATE TABLE Candidate_Auth (
+    idCandidate_Auth SERIAL PRIMARY KEY,
+    idCandidate INT REFERENCES Candidate(idCandidate) UNIQUE,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE
 );
 
 -- ----------------------
