@@ -24,7 +24,7 @@ public class PersonController {
     public Person create(@RequestBody Person person) { return personService.save(person); }
 
     @PutMapping("/{id}")
-    public Person update(@PathVariable Integer id, @RequestBody Person person) {
+    public Person update(@PathVariable Long id, @RequestBody Person person) {
         person.setIdPerson(id);
         return personService.save(person);
     }

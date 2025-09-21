@@ -9,7 +9,7 @@ public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idcandidate")
-    private Integer idCandidate;
+    private Long idCandidate;
 
     @ManyToOne
     @JoinColumn(name = "idperson")
@@ -37,8 +37,8 @@ public class Candidate {
     private String additionalInfo;
 
     // Getters and setters
-    public Integer getIdCandidate() { return idCandidate; }
-    public void setIdCandidate(Integer idCandidate) { this.idCandidate = idCandidate; }
+    public Long getIdCandidate() { return idCandidate; }
+    public void setIdCandidate(Long idCandidate) { this.idCandidate = idCandidate; }
     public Person getPerson() { return person; }
     public void setPerson(Person person) { this.person = person; }
     public CandidateStatusType getCurrentStatus() { return currentStatus; }

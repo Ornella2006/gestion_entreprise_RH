@@ -11,15 +11,15 @@ public class CandidateLanguage {
     private Integer idCandidateLanguage;
 
     @ManyToOne
-    @JoinColumn(name = "idCandidate")
+    @JoinColumn(name = "idcandidate")
     private Candidate candidate;
 
     @ManyToOne
-    @JoinColumn(name = "idLanguage")
+    @JoinColumn(name = "idlanguage")
     private Language language;
 
     @ManyToOne
-    @JoinColumn(name = "idLevel")
+    @JoinColumn(name = "idlevel")
     private Level level;
 
     // Getters and setters
@@ -32,3 +32,4 @@ public class CandidateLanguage {
     public Level getLevel() { return level; }
     public void setLevel(Level level) { this.level = level; }
 }
+

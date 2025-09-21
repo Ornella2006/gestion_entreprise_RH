@@ -1,1 +1,343 @@
-<p>Welcome</p>
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{candidate/template}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Candidature</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/css/candidate/form_cv.css}">
+
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h1 class="text-center mb-4">Formulaire de Candidature</h1>
+                    <p class="text-center text-muted mb-5">Complétez votre profil pour postuler à nos offres d'emploi</p>
+
+                    <form th:action="@{/traitement_candidature}" method="post" enctype="multipart/form-data" id="candidateForm">
+                        
+                        <!-- SECTION 1: INFORMATIONS PERSONNELLES -->
+                        <div class="form-section">
+                            <h3 class="section-title"><i class="bi bi-person-circle me-2"></i>Informations Personnelles</h3>
+                            
+                            <div class="mb-3">
+                                <label for="photo" class="form-label">Photo de profil</label>
+                                <input type="file" class="form-control" id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
+                                <div id="photoPreview" class="mt-2 text-center" style="display: none;">
+                                    <img id="previewImg" class="preview-photo" src="" alt="Aperçu de la photo">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">Prénom *</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required th:value="${session.candidateFirstName}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Nom *</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" required th:value="${session.candidateLastName}">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="birthDate" class="form-label">Date de naissance</label>
+                                    <input type="date" class="form-control" id="birthDate" name="birthDate">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="gender" class="form-label">Genre</label>
+                                    <select class="form-select" id="gender" name="gender">
+                                        <option value="">Sélectionnez...</option>
+                                        <option value="male">Homme</option>
+                                        <option value="female">Femme</option>
+                                        <option value="other">Autre</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required th:value="${session.candidateEmail}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Téléphone *</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">Ville</label>
+                                    <input type="text" class="form-control" id="city" name="city">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="linkedin" class="form-label">Profil LinkedIn</label>
+                                    <input type="url" class="form-control" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/votre-profil">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="maritalStatus" class="form-label">Situation familiale</label>
+                                    <select class="form-select" id="maritalStatus" name="maritalStatus">
+                                        <option value="">Sélectionnez...</option>
+                                        <option value="single">Célibataire</option>
+                                        <option value="married">Marié(e)</option>
+                                        <option value="divorced">Divorcé(e)</option>
+                                        <option value="widowed">Veuf/Veuve</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Permis de conduire</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="driverLicense" name="driverLicense">
+                                        <label class="form-check-label" for="driverLicense">Je possède un permis de conduire</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 2: SITUATION PROFESSIONNELLE -->
+                        <div class="form-section">
+                            <h3 class="section-title"><i class="bi bi-briefcase me-2"></i>Situation Professionnelle</h3>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="currentStatus" class="form-label">Statut actuel *</label>
+                                    <select class="form-select" id="currentStatus" name="currentStatus" required>
+                                        <option value="">Sélectionnez votre statut...</option>
+                                        <option value="employed">En poste</option>
+                                        <option value="seeking">En recherche d'emploi</option>
+                                        <option value="student">Étudiant</option>
+                                        <option value="freelancer">Indépendant/Freelance</option>
+                                        <option value="other">Autre situation</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="educationLevel" class="form-label">Niveau d'éducation</label>
+                                    <select class="form-select" id="educationLevel" name="educationLevel">
+                                        <option value="">Sélectionnez...</option>
+                                        <option value="1">Baccalauréat</option>
+                                        <option value="2">Bac+2 (BTS, DUT)</option>
+                                        <option value="3">Bac+3 (Licence)</option>
+                                        <option value="4">Bac+4 (Master 1)</option>
+                                        <option value="5">Bac+5 (Master 2)</option>
+                                        <option value="6">Doctorat</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastDegree" class="form-label">Dernier diplôme obtenu</label>
+                                    <select class="form-select" id="lastDegree" name="lastDegree">
+                                        <option value="">Sélectionnez...</option>
+                                        <option value="1">Baccalauréat</option>
+                                        <option value="2">BTS</option>
+                                        <option value="3">DUT</option>
+                                        <option value="4">Licence</option>
+                                        <option value="5">Master</option>
+                                        <option value="6">Doctorat</option>
+                                        <option value="7">Autre</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="salaryExpectation" class="form-label">Prétentions salariales (€)</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="number" class="form-control" id="salaryMin" name="salaryMin" placeholder="Minimum">
+                                        </div>
+                                        <div class="col">
+                                            <input type="number" class="form-control" id="salaryMax" name="salaryMax" placeholder="Maximum">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 3: EXPÉRIENCES PROFESSIONNELLES -->
+                        <div class="form-section">
+                            <h3 class="section-title"><i class="bi bi-building me-2"></i>Expériences Professionnelles</h3>
+                            <button type="button" class="btn-add" onclick="addExperience()">
+                                <i class="bi bi-plus-circle"></i> Ajouter une expérience
+                            </button>
+
+                            <div id="experiencesContainer">
+                                <!-- Les expériences seront ajoutées dynamiquement ici -->
+                            </div>
+                        </div>
+
+                        <!-- SECTION 4: COMPÉTENCES -->
+                        <div class="form-section">
+                            <h3 class="section-title"><i class="bi bi-tools me-2"></i>Compétences</h3>
+                            <button type="button" class="btn-add" onclick="addSkill()">
+                                <i class="bi bi-plus-circle"></i> Ajouter une compétence
+                            </button>
+
+                            <div id="skillsContainer">
+                                <!-- Les compétences seront ajoutées dynamiquement ici -->
+                            </div>
+                        </div>
+
+                        <!-- SECTION 5: LANGUES -->
+                        <div class="form-section">
+                            <h3 class="section-title"><i class="bi bi-translate me-2"></i>Langues</h3>
+                            <button type="button" class="btn-add" onclick="addLanguage()">
+                                <i class="bi bi-plus-circle"></i> Ajouter une langue
+                            </button>
+
+                            <div id="languagesContainer">
+                                <!-- Les langues seront ajoutées dynamiquement ici -->
+                            </div>
+                        </div>
+
+                        <!-- SECTION 6: INFORMATIONS COMPLÉMENTAIRES -->
+                        <div class="form-section">
+                            <h3 class="section-title"><i class="bi bi-info-circle me-2"></i>Informations Complémentaires</h3>
+                            
+                            <div class="mb-3">
+                                <label for="additionalInfo" class="form-label">Présentation personnelle</label>
+                                <textarea class="form-control" id="additionalInfo" name="additionalInfo" rows="5" placeholder="Parlez-nous de vous, de vos motivations, de vos centres d'intérêt..."></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="cvFile" class="form-label">CV (PDF)</label>
+                                <input type="file" class="form-control" id="cvFile" name="cvFile" accept=".pdf,.doc,.docx">
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-check-circle me-2"></i>Enregistrer ma candidature
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Templates pour les éléments dynamiques -->
+        <template id="experienceTemplate">
+            <div class="experience-item">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Nouvelle expérience</h5>
+                    <button type="button" class="remove-btn" onclick="removeItem(this)">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Entreprise *</label>
+                        <input type="text" class="form-control" name="companyName[]" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Poste *</label>
+                        <input type="text" class="form-control" name="position[]" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Date de début *</label>
+                        <input type="date" class="form-control" name="startDate[]" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Date de fin</label>
+                        <input type="date" class="form-control" name="endDate[]">
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="currentJob[]" onchange="toggleCurrentJob(this)">
+                            <label class="form-check-label">Poste actuel</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="jobDescription[]" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="skillTemplate">
+            <div class="skill-item">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Nouvelle compétence</h5>
+                    <button type="button" class="remove-btn" onclick="removeItem(this)">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Compétence *</label>
+                        <select class="form-select" name="skillId[]" required>
+                            <option value="">Sélectionnez une compétence...</option>
+                            <option value="1">Java</option>
+                            <option value="2">Python</option>
+                            <option value="3">JavaScript</option>
+                            <option value="4">HTML/CSS</option>
+                            <option value="5">SQL</option>
+                            <option value="6">Spring Boot</option>
+                            <option value="7">React</option>
+                            <option value="8">Angular</option>
+                            <option value="9">Gestion de projet</option>
+                            <option value="10">Communication</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Niveau *</label>
+                        <select class="form-select" name="skillLevel[]" required>
+                            <option value="">Sélectionnez un niveau...</option>
+                            <option value="1">Débutant</option>
+                            <option value="2">Intermédiaire</option>
+                            <option value="3">Avancé</option>
+                            <option value="4">Expert</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="languageTemplate">
+            <div class="language-item">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Nouvelle langue</h5>
+                    <button type="button" class="remove-btn" onclick="removeItem(this)">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Langue *</label>
+                        <select class="form-select" name="languageId[]" required>
+                            <option value="">Sélectionnez une langue...</option>
+                            <option value="1">Français</option>
+                            <option value="2">Anglais</option>
+                            <option value="3">Espagnol</option>
+                            <option value="4">Allemand</option>
+                            <option value="5">Italien</option>
+                            <option value="6">Chinois</option>
+                            <option value="7">Arabe</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Niveau *</label>
+                        <select class="form-select" name="languageLevel[]" required>
+                            <option value="">Sélectionnez un niveau...</option>
+                            <option value="1">Débutant (A1/A2)</option>
+                            <option value="2">Intermédiaire (B1/B2)</option>
+                            <option value="3">Avancé (C1/C2)</option>
+                            <option value="4">Langue maternelle</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <script src="js/candidate/form_cv.js"></script>
+
+
+       
+    </div>
+</body>
+</html>
