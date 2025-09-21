@@ -45,33 +45,39 @@ public class AuthCandidateController {
     }
 
     @PostMapping("/traitement_auth_Candidat")
-    public String traitementAuthCandidat(String email, String password, 
-            HttpSession session, RedirectAttributes redirectAttributes) {
-        
-        try {
-            // Recherche du candidat par email
-            if (authCandidateService.authenticate(email, password, session)) {
-                Person person = personRepository.findByEmail(email);
-                Candidate candidate = candidateRepository.findByPersonId(person.getIdPerson());
-            
-            
-                session.setAttribute("candidateId", candidate.getIdCandidate());
-                session.setAttribute("personId", person.getIdPerson());
-                session.setAttribute("candidateEmail", email);
-                session.setAttribute("candidateName", 
-                    person.getFirstName() + " " + person.getLastName());
+public String traitementAuthCandidat(String email, String password, 
+        @RequestParam(required = false, defaultValue = "/candidate") String redirectTo,
+        HttpSession session, RedirectAttributes redirectAttributes) {
+    
+    try {
+         System.out.println("Tentative de connexion avec email: " + email);
 
-                return "redirect:/candidature_form";
-            } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "Email ou mot de passe incorrect");
-                return "redirect:/auth_candidate";
-            }
+        if (authCandidateService.authenticate(email, password)) {
+             System.out.println("Authentification réussie pour: " + email);
 
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Erreur technique : " + e.getMessage());
-            return "redirect:/auth_candidate";
+            Candidate candidate = authCandidateService.getCandidateByEmail(email);
+            Person person = candidate.getPerson();
+            
+            session.setAttribute("candidateId", candidate.getIdCandidate());
+            session.setAttribute("personId", person.getIdPerson());
+            session.setAttribute("candidateEmail", email);
+            session.setAttribute("candidateName", person.getFirstName() + " " + person.getLastName());
+            // session.setAttribute("candidatePhoto", person.getPhotoPath());
+            
+            System.out.println("Session créée pour: " + session.getAttribute("candidateName"));
+
+            return "redirect:" + redirectTo;
+        } else {
+            System.out.println("Échec authentification pour: " + email);
+            redirectAttributes.addFlashAttribute("errorMessage", "Email ou mot de passe incorrect");
+             return "redirect:/auth_candidate?redirectTo=" + redirectTo;
         }
+    } catch (Exception e) {
+         System.out.println("Erreur technique: " + e.getMessage());
+        redirectAttributes.addFlashAttribute("errorMessage", "Erreur technique : " + e.getMessage());
+         return "redirect:/auth_candidate?redirectTo=" + redirectTo;
     }
+}
 
    @PostMapping("/traitement_signup_Candidat")
 public String traitementSignupCandidat(
@@ -102,7 +108,40 @@ public String traitementSignupCandidat(
     }
 }
 
+@GetMapping("/createTestAccount")
+public String createTestAccount() {
+    try {
+        authCandidateService.registerCandidate(
+            "test",          // firstName
+            "user",          // lastName  
+            "test@test.com", // email
+            "1234",          // password
+            "123456789",     // phone
+            CandidateStatusType.other, // status
+            null             // session
+        );
+        return "Compte test créé: test@test.com / 1234";
+    } catch (Exception e) {
+        return "Erreur: " + e.getMessage();
+    }
+}
 
 
+ // Ajoutez cette méthode temporaire dans AuthCandidateController
+    @GetMapping("/testAuth")
+    public String testAuth() {
+        String testEmail = "ornella@gmail.com";
+        String testPassword = "1234";
+        
+        boolean result = authCandidateService.authenticate(testEmail, testPassword);
+        System.out.println("Résultat test: " + result);
+        
+        return "Test terminé - résultat: " + result;
+    }
 
+    @GetMapping("/logout")
+public String logout(HttpSession session) {
+    session.invalidate();
+    return "redirect:/candidate";
+}
 }

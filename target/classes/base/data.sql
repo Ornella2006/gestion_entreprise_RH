@@ -164,11 +164,11 @@ CREATE TABLE Candidate_Language (
     idLevel INT REFERENCES Level(idLevel)
 );
 
-CREATE TABLE Candidate_Auth (
-    idCandidate_Auth SERIAL PRIMARY KEY,
-    idCandidate INT REFERENCES Candidate(idCandidate) UNIQUE,
+CREATE TABLE candidate_auth (
+    idCandidateAuth SERIAL PRIMARY KEY,
+    idCandidate INTEGER REFERENCES candidate(idCandidate) UNIQUE,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE

@@ -4,14 +4,15 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "candidate") 
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idCandidate")
+    @Column(name = "idcandidate")
     private Integer idCandidate;
 
     @ManyToOne
-    @JoinColumn(name = "idPerson")
+    @JoinColumn(name = "idperson")
     private Person person;
 
     @Enumerated(EnumType.STRING)
@@ -19,11 +20,11 @@ public class Candidate {
     private CandidateStatusType currentStatus;
 
     @ManyToOne
-    @JoinColumn(name = "idEducation_Level")
+    @JoinColumn(name = "ideducation_level")
     private EducationLevel educationLevel;
 
     @ManyToOne
-    @JoinColumn(name = "idLast_Degree")
+    @JoinColumn(name = "idlast_degree")
     private Degree lastDegree;
 
     @Column(precision = 10, scale = 2,name = "expected_salary_min")
