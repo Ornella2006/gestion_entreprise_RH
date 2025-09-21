@@ -17,7 +17,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idperson")
-    private Long idPerson;
+    private Integer idPerson;
 
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
@@ -56,8 +56,12 @@ public String getPhotoPath() { return photoPath; }
 public void setPhotoPath(String photoPath) { this.photoPath = photoPath; }
 
     // Getters and setters
-    public Long getIdPerson() { return idPerson; }
-    public void setIdPerson(Long id) { this.idPerson = id; }
+    public Integer getIdPerson() { return idPerson; }
+
+    
+    public void setIdPerson(Integer id) { this.idPerson = id; }
+
+
     public MaritalStatusType getMaritalStatus() { return maritalStatus; }
     public void setMaritalStatus(MaritalStatusType maritalStatus) { this.maritalStatus = maritalStatus; }
     public String getFirstName() { return firstName; }

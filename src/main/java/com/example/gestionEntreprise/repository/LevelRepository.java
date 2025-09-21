@@ -4,5 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.gestionEntreprise.model.Level;
 
-public interface LevelRepository extends JpaRepository<Level, Long> {
+public interface LevelRepository extends JpaRepository<Level, Integer> 
+{
 }

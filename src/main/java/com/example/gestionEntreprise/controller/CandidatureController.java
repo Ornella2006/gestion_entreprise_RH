@@ -66,8 +66,8 @@ public class CandidatureController {
             @RequestParam("maritalStatus") String maritalStatus,
             @RequestParam(value = "driverLicense", required = false) Boolean driverLicense,
             @RequestParam("currentStatus") String currentStatus,
-            @RequestParam("educationLevel") Long educationLevelId,
-            @RequestParam("lastDegree") Long lastDegreeId,
+            @RequestParam("educationLevel") Integer educationLevelId,
+            @RequestParam("lastDegree") Integer lastDegreeId,
             @RequestParam(value = "salaryMin", required = false) Double salaryMin,
             @RequestParam(value = "salaryMax", required = false) Double salaryMax,
             @RequestParam("companyName") String[] companyNames,
@@ -76,10 +76,10 @@ public class CandidatureController {
             @RequestParam("endDate") String[] endDates,
             @RequestParam("jobDescription") String[] jobDescriptions,
             @RequestParam("currentJob") String[] currentJobs,
-            @RequestParam("skillId") Long[] skillIds,
-            @RequestParam("skillLevel") Long[] skillLevels,
-            @RequestParam("languageId") Long[] languageIds,
-            @RequestParam("languageLevel") Long[] languageLevels,
+            @RequestParam("skillId") Integer[] skillIds,
+            @RequestParam("skillLevel") Integer[] skillLevels,
+            @RequestParam("languageId") Integer[] languageIds,
+            @RequestParam("languageLevel") Integer[] languageLevels,
             @RequestParam("additionalInfo") String additionalInfo,
             @RequestParam(value = "cvFile", required = false) MultipartFile cvFile,
             HttpSession session,
@@ -91,13 +91,12 @@ public class CandidatureController {
             if (candidateId == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Veuillez vous connecter d'abord");
                 return "redirect:/auth_candidate";
+ 
             }
 
-            // Convertir Integer en Long
-            Long candidateIdLong = candidateId.longValue();
-
+            
             // Récupérer le candidat existant
-            Candidate candidate = candidateRepository.findById(candidateIdLong)
+            Candidate candidate = candidateRepository.findById(candidateId)
                     .orElseThrow(() -> new RuntimeException("Candidat non trouvé"));
 
             Person person = candidate.getPerson();
@@ -234,7 +233,7 @@ public class CandidatureController {
         }
     }
 
-    private void saveSkills(Candidate candidate, Long[] skillIds, Long[] skillLevels) {
+    private void saveSkills(Candidate candidate, Integer[] skillIds, Integer[] skillLevels) {
         // Supprimer les compétences existantes
         candidateSkillRepository.deleteByCandidateIdCandidate(candidate.getIdCandidate());
 
@@ -255,7 +254,7 @@ public class CandidatureController {
         }
     }
 
-    private void saveLanguages(Candidate candidate, Long[] languageIds, Long[] languageLevels) {
+    private void saveLanguages(Candidate candidate, Integer[] languageIds, Integer[] languageLevels) {
         // Supprimer les langues existantes
         candidateLanguageRepository.deleteByCandidateIdCandidate(candidate.getIdCandidate());
 
@@ -278,7 +277,7 @@ public class CandidatureController {
 
     private boolean checkAutomationRules(Candidate candidate) {
         // Convertir l'ID du candidat en Long
-        Long candidateId = candidate.getIdCandidate();
+        Integer candidateId = candidate.getIdCandidate();
         
         // Implémenter la logique d'automatisation selon les besoins en personnel
         // Cette méthode devrait vérifier si le candidat correspond aux profils recherchés

@@ -32,7 +32,11 @@ public class Experience {
 
     // Getters and setters
     public Integer getIdExperience() { return idExperience; }
+
+
     public void setIdExperience(Integer idExperience) { this.idExperience = idExperience; }
+
+    
     public Candidate getCandidate() { return candidate; }
     public void setCandidate(Candidate candidate) { this.candidate = candidate; }
     public String getCompanyName() { return companyName; }

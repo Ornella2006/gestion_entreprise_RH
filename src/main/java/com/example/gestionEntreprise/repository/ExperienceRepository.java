@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface ExperienceRepository extends JpaRepository<Experience, Long> {
-    List<Experience> findByCandidateIdCandidate(Long candidateId);
+public interface ExperienceRepository extends JpaRepository<Experience, Integer> {
+    List<Experience> findByCandidateIdCandidate(Integer candidateId);
     
     @Transactional
     @Modifying
     @Query("DELETE FROM Experience e WHERE e.candidate.idCandidate = :candidateId")
-    void deleteByCandidateIdCandidate(@Param("candidateId") Long candidateId);
+    void deleteByCandidateIdCandidate(@Param("candidateId") Integer candidateId);
 }

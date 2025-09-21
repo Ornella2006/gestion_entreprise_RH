@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface CandidateLanguageRepository extends JpaRepository<CandidateLanguage, Long> {
-    List<CandidateLanguage> findByCandidateIdCandidate(Long candidateId);
+public interface CandidateLanguageRepository extends JpaRepository<CandidateLanguage, Integer> {
+    List<CandidateLanguage> findByCandidateIdCandidate(Integer candidateId);
     
     @Transactional
     @Modifying
     @Query("DELETE FROM CandidateLanguage cl WHERE cl.candidate.idCandidate = :candidateId")
-    void deleteByCandidateIdCandidate(@Param("candidateId") Long candidateId);
+    void deleteByCandidateIdCandidate(@Param("candidateId") Integer candidateId);
 }
