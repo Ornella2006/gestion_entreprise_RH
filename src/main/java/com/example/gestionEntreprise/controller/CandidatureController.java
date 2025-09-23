@@ -1,20 +1,49 @@
 package com.example.gestionEntreprise.controller;
 
-import com.example.gestionEntreprise.model.*;
-import com.example.gestionEntreprise.repository.*;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.gestionEntreprise.dto.CandidatureForm;
+import com.example.gestionEntreprise.model.Candidate;
+import com.example.gestionEntreprise.model.CandidateLanguage;
+import com.example.gestionEntreprise.model.CandidateSkill;
+import com.example.gestionEntreprise.model.CandidateStatusType;
+import com.example.gestionEntreprise.model.Degree;
+import com.example.gestionEntreprise.model.EducationLevel;
+import com.example.gestionEntreprise.model.Experience;
+import com.example.gestionEntreprise.model.Language;
+import com.example.gestionEntreprise.model.Level;
+import com.example.gestionEntreprise.model.MaritalStatusType;
+import com.example.gestionEntreprise.model.Person;
+import com.example.gestionEntreprise.model.Skill;
+import com.example.gestionEntreprise.repository.CandidateLanguageRepository;
+import com.example.gestionEntreprise.repository.CandidateRepository;
+import com.example.gestionEntreprise.repository.CandidateSkillRepository;
+import com.example.gestionEntreprise.repository.DegreeRepository;
+import com.example.gestionEntreprise.repository.EducationLevelRepository;
+import com.example.gestionEntreprise.repository.ExperienceRepository;
+import com.example.gestionEntreprise.repository.LanguageRepository;
+import com.example.gestionEntreprise.repository.LevelRepository;
+import com.example.gestionEntreprise.repository.PersonRepository;
+import com.example.gestionEntreprise.repository.SkillRepository;
+import com.example.gestionEntreprise.repository.MatchingCandidateProjection;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CandidatureController {
@@ -52,146 +81,119 @@ public class CandidatureController {
     // Dossier pour stocker les fichiers uploadés
     private static final String UPLOAD_DIR = "uploads/";
 
-    @PostMapping("/traitement_candidature")
-    public String traitementCandidature(
-            @RequestParam("photo") MultipartFile photoFile,
-            @RequestParam("firstName") String firstName,
-            @RequestParam("lastName") String lastName,
-            @RequestParam("birthDate") String birthDateStr,
-            @RequestParam("gender") String gender,
-            @RequestParam("email") String email,
-            @RequestParam("phone") String phone,
-            @RequestParam("city") String city,
-            @RequestParam("linkedin") String linkedin,
-            @RequestParam("maritalStatus") String maritalStatus,
-            @RequestParam(value = "driverLicense", required = false) Boolean driverLicense,
-            @RequestParam("currentStatus") String currentStatus,
-            @RequestParam("educationLevel") Integer educationLevelId,
-            @RequestParam("lastDegree") Integer lastDegreeId,
-            @RequestParam(value = "salaryMin", required = false) Double salaryMin,
-            @RequestParam(value = "salaryMax", required = false) Double salaryMax,
-            @RequestParam("companyName") String[] companyNames,
-            @RequestParam("position") String[] positions,
-            @RequestParam("startDate") String[] startDates,
-            @RequestParam("endDate") String[] endDates,
-            @RequestParam("jobDescription") String[] jobDescriptions,
-            @RequestParam("currentJob") String[] currentJobs,
-            @RequestParam("skillId") Integer[] skillIds,
-            @RequestParam("skillLevel") Integer[] skillLevels,
-            @RequestParam("languageId") Integer[] languageIds,
-            @RequestParam("languageLevel") Integer[] languageLevels,
-            @RequestParam("additionalInfo") String additionalInfo,
-            @RequestParam(value = "cvFile", required = false) MultipartFile cvFile,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
+   @PostMapping("/traitement_candidature")
+public String traitementCandidature(
+        @ModelAttribute CandidatureForm form,
+        HttpSession session,
+        RedirectAttributes redirectAttributes) {
 
-        try {
-            // Vérifier si l'utilisateur est connecté
-            Integer candidateId = (Integer) session.getAttribute("candidateId");
-            if (candidateId == null) {
-                redirectAttributes.addFlashAttribute("errorMessage", "Veuillez vous connecter d'abord");
-                return "redirect:/auth_candidate";
- 
-            }
+    try {
+         System.out.println("=== DÉBUT TRAITEMENT CANDIDATURE ===");
+        System.out.println("Prénom: " + form.getFirstName());
+        System.out.println("Nombre d'expériences: " + (form.getCompanyName() != null ? form.getCompanyName().size() : 0));
+        System.out.println("Nombre de compétences: " + (form.getSkillId() != null ? form.getSkillId().size() : 0));
+        // Vérifier si l'utilisateur est connecté
+        Integer candidateId = (Integer) session.getAttribute("candidateId");
+        System.out.println("Candidate ID from session: " + candidateId);
 
-            
-            // Récupérer le candidat existant
-            Candidate candidate = candidateRepository.findById(candidateId)
-                    .orElseThrow(() -> new RuntimeException("Candidat non trouvé"));
-
-            Person person = candidate.getPerson();
-
-            // Mettre à jour les informations personnelles
-            person.setFirstName(firstName);
-            person.setLastName(lastName);
-            
-            if (birthDateStr != null && !birthDateStr.isEmpty()) {
-                person.setBirthDate(LocalDate.parse(birthDateStr));
-            }
-            
-            person.setGender(gender);
-            person.setPhone(phone);
-            person.setCity(city);
-            person.setLinkedin(linkedin);
-            
-            if (maritalStatus != null && !maritalStatus.isEmpty()) {
-                person.setMaritalStatus(MaritalStatusType.valueOf(maritalStatus.toUpperCase()));
-            }
-            
-            person.setDriverLicense(driverLicense != null && driverLicense);
-
-            // Gérer l'upload de la photo
-            if (photoFile != null && !photoFile.isEmpty()) {
-                String photoPath = saveFile(photoFile, "photos");
-                person.setPhotoPath(photoPath);
-            }
-
-            person = personRepository.save(person);
-
-            // Mettre à jour les informations du candidat
-            candidate.setCurrentStatus(CandidateStatusType.valueOf(currentStatus.toUpperCase()));
-            
-            if (educationLevelId != null) {
-                EducationLevel educationLevel = educationLevelRepository.findById(educationLevelId)
-                        .orElseThrow(() -> new RuntimeException("Niveau d'éducation non trouvé"));
-                candidate.setEducationLevel(educationLevel);
-            }
-            
-            if (lastDegreeId != null) {
-                Degree lastDegree = degreeRepository.findById(lastDegreeId)
-                        .orElseThrow(() -> new RuntimeException("Diplôme non trouvé"));
-                candidate.setLastDegree(lastDegree);
-            }
-            
-            if (salaryMin != null) {
-                candidate.setExpectedSalaryMin(java.math.BigDecimal.valueOf(salaryMin));
-            }
-            
-            if (salaryMax != null) {
-                candidate.setExpectedSalaryMax(java.math.BigDecimal.valueOf(salaryMax));
-            }
-            
-            candidate.setAdditionalInfo(additionalInfo);
-            candidate = candidateRepository.save(candidate);
-
-            // Gérer les expériences professionnelles
-            saveExperiences(candidate, companyNames, positions, startDates, endDates, jobDescriptions, currentJobs);
-
-            // Gérer les compétences
-            saveSkills(candidate, skillIds, skillLevels);
-
-            // Gérer les langues
-            saveLanguages(candidate, languageIds, languageLevels);
-
-            // Gérer l'upload du CV
-            if (cvFile != null && !cvFile.isEmpty()) {
-                String cvPath = saveFile(cvFile, "cvs");
-                // Vous pouvez stocker le chemin du CV dans la table Candidate ou une table dédiée
-            }
-
-            // Mettre à jour la session avec les nouvelles informations
-            session.setAttribute("candidateName", person.getFirstName() + " " + person.getLastName());
-            session.setAttribute("candidateEmail", email);
-            if (person.getPhotoPath() != null) {
-                session.setAttribute("candidatePhoto", person.getPhotoPath());
-            }
-
-            // Vérifier l'automatisation selon le profil recherché
-            boolean shouldRedirectToTest = checkAutomationRules(candidate);
-            
-            if (shouldRedirectToTest) {
-                redirectAttributes.addFlashAttribute("successMessage", "Votre candidature a été enregistrée avec succès! Vous allez être redirigé vers le test.");
-                return "redirect:/test/qcm";
-            } else {
-                redirectAttributes.addFlashAttribute("successMessage", "Votre candidature a été enregistrée avec succès! Nous vous contacterons prochainement.");
-                return "redirect:/candidate";
-            }
-
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de l'enregistrement: " + e.getMessage());
-            return "redirect:/demandeCandidature";
+        if (candidateId == null) {
+             System.out.println("Aucun candidat connecté - redirection");
+            redirectAttributes.addFlashAttribute("errorMessage", "Veuillez vous connecter d'abord");
+            return "redirect:/auth_candidate";
         }
+
+        // Récupérer le candidat existant
+        Candidate candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new RuntimeException("Candidat non trouvé"));
+
+        Person person = candidate.getPerson();
+
+        // Mettre à jour les informations personnelles
+        person.setFirstName(form.getFirstName());
+        person.setLastName(form.getLastName());
+        
+        if (form.getBirthDate() != null && !form.getBirthDate().isEmpty()) {
+            person.setBirthDate(LocalDate.parse(form.getBirthDate()));
+        }
+        
+        person.setGender(form.getGender());
+        person.setPhone(form.getPhone());
+        person.setCity(form.getCity());
+        person.setLinkedin(form.getLinkedin());
+        
+        if (form.getMaritalStatus() != null && !form.getMaritalStatus().isEmpty()) {
+            person.setMaritalStatus(MaritalStatusType.valueOf(form.getMaritalStatus().toLowerCase()));
+        }
+        
+        person.setDriverLicense(form.getDriverLicense() != null && form.getDriverLicense());
+
+        // Gérer l'upload de la photo
+        if (form.getPhoto() != null && !form.getPhoto().isEmpty()) {
+            String photoPath = saveFile(form.getPhoto(), "photos");
+            person.setPhotoPath(photoPath);
+        }
+
+        person = personRepository.save(person);
+
+        // Mettre à jour les informations du candidat
+        candidate.setCurrentStatus(CandidateStatusType.valueOf(form.getCurrentStatus().toUpperCase()));
+        
+        if (form.getEducationLevel() != null) {
+            EducationLevel educationLevel = educationLevelRepository.findById(form.getEducationLevel())
+                    .orElseThrow(() -> new RuntimeException("Niveau d'éducation non trouvé"));
+            candidate.setEducationLevel(educationLevel);
+        }
+        
+        if (form.getLastDegree() != null) {
+            Degree lastDegree = degreeRepository.findById(form.getLastDegree())
+                    .orElseThrow(() -> new RuntimeException("Diplôme non trouvé"));
+            candidate.setLastDegree(lastDegree);
+        }
+        
+        if (form.getSalaryMin() != null) {
+            candidate.setExpectedSalaryMin(java.math.BigDecimal.valueOf(form.getSalaryMin()));
+        }
+        
+        if (form.getSalaryMax() != null) {
+            candidate.setExpectedSalaryMax(java.math.BigDecimal.valueOf(form.getSalaryMax()));
+        }
+        
+        candidate.setAdditionalInfo(form.getAdditionalInfo());
+        candidate = candidateRepository.save(candidate);
+
+        // Gérer les expériences professionnelles
+        saveExperiences(candidate, form);
+
+        // Gérer les compétences
+        saveSkills(candidate, form);
+
+        // Gérer les langues
+        saveLanguages(candidate, form);
+
+        // Mettre à jour la session avec les nouvelles informations
+        session.setAttribute("candidateName", person.getFirstName() + " " + person.getLastName());
+        session.setAttribute("candidateEmail", form.getEmail());
+        if (person.getPhotoPath() != null) {
+            session.setAttribute("candidatePhoto", person.getPhotoPath());
+        }
+
+        // Vérifier l'automatisation selon le profil recherché
+        boolean shouldRedirectToTest = checkAutomationRules(candidate);
+        
+        if (shouldRedirectToTest) {
+            redirectAttributes.addFlashAttribute("successMessage", "Votre candidature a été enregistrée avec succès! Vous allez être redirigé vers le test.");
+            return "redirect:/test/qcm";
+        } else {
+            redirectAttributes.addFlashAttribute("successMessage", "Votre candidature a été enregistrée avec succès! Nous vous contacterons prochainement.");
+            return "redirect:/candidate";
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace(); // Pour logger l'erreur complète dans le terminal
+        redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de l'enregistrement: " + e.getMessage());
+        return "redirect:/demandeCandidature";
     }
+}
 
     private String saveFile(MultipartFile file, String subfolder) throws IOException {
         // Créer le dossier s'il n'existe pas
@@ -208,100 +210,181 @@ public class CandidatureController {
         return "/" + UPLOAD_DIR + subfolder + "/" + fileName;
     }
 
-    private void saveExperiences(Candidate candidate, String[] companyNames, String[] positions, 
-                               String[] startDates, String[] endDates, String[] jobDescriptions, 
-                               String[] currentJobs) {
-        // Supprimer les expériences existantes
-        experienceRepository.deleteByCandidateIdCandidate(candidate.getIdCandidate());
+    private void saveExperiences(Candidate candidate, CandidatureForm form) {
+    // Supprimer les expériences existantes
+    experienceRepository.deleteByCandidateIdCandidate(candidate.getIdCandidate());
 
-        // Ajouter les nouvelles expériences
-        for (int i = 0; i < companyNames.length; i++) {
-            Experience experience = new Experience();
-            experience.setCandidate(candidate);
-            experience.setCompanyName(companyNames[i]);
-            experience.setPosition(positions[i]);
-            experience.setStartDate(LocalDate.parse(startDates[i]));
-            
-            if (currentJobs[i] != null && Boolean.parseBoolean(currentJobs[i])) {
-                experience.setEndDate(null); // Poste actuel
-            } else if (endDates[i] != null && !endDates[i].isEmpty()) {
-                experience.setEndDate(LocalDate.parse(endDates[i]));
-            }
-            
-            experience.setDescription(jobDescriptions[i]);
-            experienceRepository.save(experience);
+    // Vérifier si des expériences ont été fournies
+    if (form.getCompanyName() == null || form.getCompanyName().isEmpty()) {
+        return;
+    }
+
+    // Ajouter les nouvelles expériences
+    for (int i = 0; i < form.getCompanyName().size(); i++) {
+        // Vérifier que tous les champs requis sont présents
+        if (form.getCompanyName().get(i) == null || form.getPosition().get(i) == null || form.getStartDate().get(i) == null) {
+            continue; // Ignorer les expériences incomplètes
         }
-    }
-
-    private void saveSkills(Candidate candidate, Integer[] skillIds, Integer[] skillLevels) {
-        // Supprimer les compétences existantes
-        candidateSkillRepository.deleteByCandidateIdCandidate(candidate.getIdCandidate());
-
-        // Ajouter les nouvelles compétences
-        for (int i = 0; i < skillIds.length; i++) {
-            CandidateSkill candidateSkill = new CandidateSkill();
-            candidateSkill.setCandidate(candidate);
-            
-            Skill skill = skillRepository.findById(skillIds[i])
-                    .orElseThrow(() -> new RuntimeException("Compétence non trouvée"));
-            candidateSkill.setSkill(skill);
-            
-            Level level = levelRepository.findById(skillLevels[i])
-                    .orElseThrow(() -> new RuntimeException("Niveau non trouvé"));
-            candidateSkill.setLevel(level);
-            
-            candidateSkillRepository.save(candidateSkill);
+        
+        Experience experience = new Experience();
+        experience.setCandidate(candidate);
+        experience.setCompanyName(form.getCompanyName().get(i));
+        experience.setPosition(form.getPosition().get(i));
+        experience.setStartDate(LocalDate.parse(form.getStartDate().get(i)));
+        
+        if (form.getCurrentJob() != null && i < form.getCurrentJob().size() && form.getCurrentJob().get(i) != null && 
+            Boolean.parseBoolean(form.getCurrentJob().get(i))) {
+            experience.setEndDate(null); // Poste actuel
+        } else if (form.getEndDate() != null && i < form.getEndDate().size() && form.getEndDate().get(i) != null && 
+                   !form.getEndDate().get(i).isEmpty()) {
+            experience.setEndDate(LocalDate.parse(form.getEndDate().get(i)));
         }
-    }
-
-    private void saveLanguages(Candidate candidate, Integer[] languageIds, Integer[] languageLevels) {
-        // Supprimer les langues existantes
-        candidateLanguageRepository.deleteByCandidateIdCandidate(candidate.getIdCandidate());
-
-        // Ajouter les nouvelles langues
-        for (int i = 0; i < languageIds.length; i++) {
-            CandidateLanguage candidateLanguage = new CandidateLanguage();
-            candidateLanguage.setCandidate(candidate);
-            
-            Language language = languageRepository.findById(languageIds[i])
-                    .orElseThrow(() -> new RuntimeException("Langue non trouvée"));
-            candidateLanguage.setLanguage(language);
-            
-            Level level = levelRepository.findById(languageLevels[i])
-                    .orElseThrow(() -> new RuntimeException("Niveau non trouvé"));
-            candidateLanguage.setLevel(level);
-            
-            candidateLanguageRepository.save(candidateLanguage);
+        
+        if (form.getJobDescription() != null && i < form.getJobDescription().size()) {
+            experience.setDescription(form.getJobDescription().get(i));
         }
+        
+        experienceRepository.save(experience);
+    }
+}
+
+
+    private void saveSkills(Candidate candidate, CandidatureForm form) {
+    // Supprimer les compétences existantes
+    candidateSkillRepository.deleteByCandidateIdCandidate(candidate.getIdCandidate());
+
+    // Vérifier si des compétences ont été fournies
+    if (form.getSkillId() == null || form.getSkillId().isEmpty()) {
+        return;
     }
 
-    private boolean checkAutomationRules(Candidate candidate) {
-        // Convertir l'ID du candidat en Long
-        Integer candidateId = candidate.getIdCandidate();
+    // Ajouter les nouvelles compétences
+    for (int i = 0; i < form.getSkillId().size(); i++) {
+        if (form.getSkillId().get(i) == null || form.getSkillLevel().get(i) == null) {
+            continue; // Ignorer les compétences incomplètes
+        }
         
-        // Implémenter la logique d'automatisation selon les besoins en personnel
-        // Cette méthode devrait vérifier si le candidat correspond aux profils recherchés
+        CandidateSkill candidateSkill = new CandidateSkill();
+        candidateSkill.setCandidate(candidate);
         
-        // Exemple de règles simples :
-        // 1. Vérifier les compétences techniques
-        boolean hasTechnicalSkills = candidateSkillRepository.findByCandidateIdCandidate(candidateId)
-                .stream()
-                .anyMatch(cs -> {
-                    String skillName = cs.getSkill().getSkillName().toLowerCase();
-                    return skillName.contains("java") || skillName.contains("python") || 
-                           skillName.contains("javascript") || skillName.contains("spring");
-                });
+        Skill skill = skillRepository.findById(form.getSkillId().get(i))
+                .orElseThrow(() -> new RuntimeException("Compétence non trouvée"));
+        candidateSkill.setSkill(skill);
         
-        // 2. Vérifier le niveau d'éducation
-        boolean hasHigherEducation = candidate.getEducationLevel() != null && 
-                                   candidate.getEducationLevel().getIdEducationLevel() >= 3; // Bac+3 minimum
+        Level level = levelRepository.findById(form.getSkillLevel().get(i))
+                .orElseThrow(() -> new RuntimeException("Niveau non trouvé"));
+        candidateSkill.setLevel(level);
         
-        // 3. Vérifier les langues
-        boolean hasEnglish = candidateLanguageRepository.findByCandidateIdCandidate(candidateId)
-                .stream()
-                .anyMatch(cl -> cl.getLanguage().getLanguageName().equalsIgnoreCase("Anglais") && 
-                              cl.getLevel().getIdLevel() >= 2); // Niveau intermédiaire minimum
-        
-        return hasTechnicalSkills && hasHigherEducation && hasEnglish;
+        candidateSkillRepository.save(candidateSkill);
     }
+}
+
+
+    private void saveLanguages(Candidate candidate, CandidatureForm form) {
+    // Supprimer les langues existantes
+    candidateLanguageRepository.deleteByCandidateIdCandidate(candidate.getIdCandidate());
+
+    // Vérifier si des langues ont été fournies
+    if (form.getLanguageId() == null || form.getLanguageId().isEmpty()) {
+        return;
+    }
+
+    // Ajouter les nouvelles langues
+    for (int i = 0; i < form.getLanguageId().size(); i++) {
+        if (form.getLanguageId().get(i) == null || form.getLanguageLevel().get(i) == null) {
+            continue; // Ignorer les langues incomplètes
+        }
+        
+        CandidateLanguage candidateLanguage = new CandidateLanguage();
+        candidateLanguage.setCandidate(candidate);
+        
+        Language language = languageRepository.findById(form.getLanguageId().get(i))
+                .orElseThrow(() -> new RuntimeException("Langue non trouvée"));
+        candidateLanguage.setLanguage(language);
+        
+        Level level = levelRepository.findById(form.getLanguageLevel().get(i))
+                .orElseThrow(() -> new RuntimeException("Niveau non trouvé"));
+        candidateLanguage.setLevel(level);
+        
+        candidateLanguageRepository.save(candidateLanguage);
+    }
+}
+
+   private boolean checkAutomationRules(Candidate candidate) {
+    try {
+        // Assumez un request actif (id=1 pour test). Plus tard, query le dernier published
+        Integer activeRequestId = 1;  // Ou autowire RecruitmentRequestRepository et findByStatus("published")
+        
+        List<MatchingCandidateProjection> matching = candidateRepository.findMatchingCandidates(activeRequestId);
+        
+        // Check si ce candidate est dans les matching (triage auto basé sur critères admin)
+        return matching.stream()
+            .anyMatch(m -> m.getIdCandidate().equals(candidate.getIdCandidate()));
+        
+    } catch (Exception e) {
+        e.printStackTrace(); // Pour logger l'erreur complète dans le terminal
+        return false;  // Si erreur (ex: pas de request), ne passe pas
+    }
+}
+
+
+private boolean checkTechnicalSkills(Integer candidateId) {
+    List<CandidateSkill> skills = candidateSkillRepository.findByCandidateIdCandidate(candidateId);
+    if (skills == null || skills.isEmpty()) {
+        return false;
+    }
+    
+    return skills.stream()
+            .filter(cs -> cs.getSkill() != null && cs.getSkill().getSkillName() != null)
+            .anyMatch(cs -> {
+                String skillName = cs.getSkill().getSkillName().toLowerCase();
+                return skillName.contains("java") || skillName.contains("python") || 
+                       skillName.contains("javascript") || skillName.contains("spring");
+            });
+}
+
+private boolean checkEducationLevel(Candidate candidate) {
+    return candidate.getEducationLevel() != null && 
+           candidate.getEducationLevel().getIdEducationLevel() != null &&
+           candidate.getEducationLevel().getIdEducationLevel() >= 3;
+}
+
+private boolean checkLanguageSkills(Integer candidateId) {
+    List<CandidateLanguage> languages = candidateLanguageRepository.findByCandidateIdCandidate(candidateId);
+    if (languages == null || languages.isEmpty()) {
+        return false;
+    }
+    
+    return languages.stream()
+            .filter(cl -> cl.getLanguage() != null && cl.getLevel() != null)
+            .anyMatch(cl -> 
+                "Anglais".equalsIgnoreCase(cl.getLanguage().getLanguageName()) && 
+                cl.getLevel().getIdLevel() != null &&
+                cl.getLevel().getIdLevel() >= 2
+            );
+}
+
+@PostMapping("/testForm")
+@ResponseBody
+public String testForm(@ModelAttribute CandidatureForm form) {
+    StringBuilder result = new StringBuilder();
+    result.append("FirstName: ").append(form.getFirstName()).append("<br>");
+    result.append("Nombre d'expériences: ").append(form.getCompanyName() != null ? form.getCompanyName().size() : 0).append("<br>");
+    result.append("Nombre de compétences: ").append(form.getSkillId() != null ? form.getSkillId().size() : 0).append("<br>");
+    result.append("Nombre de langues: ").append(form.getLanguageId() != null ? form.getLanguageId().size() : 0).append("<br>");
+    
+    if (form.getCompanyName() != null) {
+        result.append("Entreprises: ").append(String.join(", ", form.getCompanyName())).append("<br>");
+    }
+    
+    return result.toString();
+}
+
+@GetMapping("/testFormPage")
+public String testFormPage() {
+    return "test-form"; // Cela affichera test-form.html
+}
+
+
+
 }

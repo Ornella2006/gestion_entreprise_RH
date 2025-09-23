@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.gestionEntreprise.model.Candidate;
@@ -64,6 +65,10 @@ public String traitementAuthCandidat(String email, String password,
             session.setAttribute("candidateName", person.getFirstName() + " " + person.getLastName());
             // session.setAttribute("candidatePhoto", person.getPhotoPath());
             
+            session.setAttribute("candidateFirstName", person.getFirstName());
+            session.setAttribute("candidateLastName", person.getLastName());
+            session.setAttribute("candidatePhone", person.getPhone());
+
             System.out.println("Session créée pour: " + session.getAttribute("candidateName"));
 
             return "redirect:" + redirectTo;
@@ -140,8 +145,21 @@ public String createTestAccount() {
     }
 
     @GetMapping("/logout")
-public String logout(HttpSession session) {
-    session.invalidate();
-    return "redirect:/candidate";
-}
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/candidate";
+    }
+
+    @GetMapping("/debugSession")
+    @ResponseBody
+    public String debugSession(HttpSession session) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Session attributes:<br>");
+        java.util.Enumeration<String> attributes = session.getAttributeNames();
+        while (attributes.hasMoreElements()) {
+            String name = attributes.nextElement();
+            sb.append(name).append(": ").append(session.getAttribute(name)).append("<br>");
+        }
+        return sb.toString();
+    }
 }

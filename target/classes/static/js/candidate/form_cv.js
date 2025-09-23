@@ -19,18 +19,36 @@
             function addExperience() {
                 const template = document.getElementById('experienceTemplate');
                 const clone = template.content.cloneNode(true);
+                const inputs = clone.querySelectorAll('[name]');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name');
+                    input.setAttribute('name', name.replace('[]', ''));
+                });
                 document.getElementById('experiencesContainer').appendChild(clone);
             }
 
             function addSkill() {
                 const template = document.getElementById('skillTemplate');
                 const clone = template.content.cloneNode(true);
+
+                const inputs = clone.querySelectorAll('[name]');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name');
+                    input.setAttribute('name', name.replace('[]', ''));
+                });
                 document.getElementById('skillsContainer').appendChild(clone);
             }
 
             function addLanguage() {
                 const template = document.getElementById('languageTemplate');
                 const clone = template.content.cloneNode(true);
+
+
+                const inputs = clone.querySelectorAll('[name]');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name');
+                    input.setAttribute('name', name.replace('[]', ''));
+                });
                 document.getElementById('languagesContainer').appendChild(clone);
             }
 

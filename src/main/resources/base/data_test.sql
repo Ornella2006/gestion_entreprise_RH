@@ -40,7 +40,7 @@ INSERT INTO Language (language_name) VALUES
 ('Chinois'),
 ('Arabe');
 
--- Niveaux
+-- Niveauxd
 INSERT INTO Level (level_name, score_level) VALUES 
 ('Débutant', 1),
 ('Intermédiaire', 2),

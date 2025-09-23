@@ -17,3 +17,5 @@ INSERT INTO "user" (idEmployee, username, password)
 VALUES
 (1, 'alice_admin', 'admin123'),
 (2, 'bob_rh', 'rh123');
+
+-- insert into candidate_auth ()

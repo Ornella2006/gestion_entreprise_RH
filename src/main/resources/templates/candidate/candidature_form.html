@@ -18,7 +18,7 @@
                     <p class="text-center text-muted mb-5">Complétez votre profil pour postuler à nos offres d'emploi</p>
 
                     <form th:action="@{/traitement_candidature}" method="post" enctype="multipart/form-data" id="candidateForm">
-                        
+                       
                         <!-- SECTION 1: INFORMATIONS PERSONNELLES -->
                         <div class="form-section">
                             <h3 class="section-title"><i class="bi bi-person-circle me-2"></i>Informations Personnelles</h3>
@@ -34,11 +34,11 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="firstName" class="form-label">Prénom *</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" required th:value="${session.candidateFirstName}">
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required th:value="${candidateFirstName}">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="lastName" class="form-label">Nom *</label>
-                                    <input type="text" class="form-control" id="lastName" name="lastName" required th:value="${session.candidateLastName}">
+                                    <input type="text" class="form-control" id="lastName" name="lastName" required th:value="${candidateLastName}">
                                 </div>
                             </div>
 
@@ -61,11 +61,11 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="email" class="form-label">Email *</label>
-                                    <input type="email" class="form-control" id="email" name="email" required th:value="${session.candidateEmail}">
+                                    <input type="email" class="form-control" id="email" name="email" required th:value="${candidateEmail}">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="phone" class="form-label">Téléphone *</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                                    <input type="tel" class="form-control" id="phone" name="phone" required th:value="${candidatePhone}">
                                 </div>
                             </div>
 
@@ -204,10 +204,7 @@
                                 <textarea class="form-control" id="additionalInfo" name="additionalInfo" rows="5" placeholder="Parlez-nous de vous, de vos motivations, de vos centres d'intérêt..."></textarea>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="cvFile" class="form-label">CV (PDF)</label>
-                                <input type="file" class="form-control" id="cvFile" name="cvFile" accept=".pdf,.doc,.docx">
-                            </div>
+                           
                         </div>
 
                         <div class="text-center mt-4">
@@ -232,29 +229,29 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Entreprise *</label>
-                        <input type="text" class="form-control" name="companyName[]" required>
+                        <input type="text" class="form-control" name="companyName" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Poste *</label>
-                        <input type="text" class="form-control" name="position[]" required>
+                        <input type="text" class="form-control" name="position" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <label class="form-label">Date de début *</label>
-                        <input type="date" class="form-control" name="startDate[]" required>
+                        <input type="date" class="form-control" name="startDate" required>
                     </div>
                     <div class="col-md-3 mb-3">
                         <label class="form-label">Date de fin</label>
-                        <input type="date" class="form-control" name="endDate[]">
+                        <input type="date" class="form-control" name="endDate">
                         <div class="form-check mt-2">
-                            <input class="form-check-input" type="checkbox" name="currentJob[]" onchange="toggleCurrentJob(this)">
+                            <input class="form-check-input" type="checkbox" name="currentJob" onchange="toggleCurrentJob(this)">
                             <label class="form-check-label">Poste actuel</label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Description</label>
-                        <textarea class="form-control" name="jobDescription[]" rows="3"></textarea>
+                        <textarea class="form-control" name="jobDescription" rows="3"></textarea>
                     </div>
                 </div>
             </div>
@@ -271,7 +268,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Compétence *</label>
-                        <select class="form-select" name="skillId[]" required>
+                        <select class="form-select" name="skillId" required>
                             <option value="">Sélectionnez une compétence...</option>
                             <option value="1">Java</option>
                             <option value="2">Python</option>
@@ -287,7 +284,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Niveau *</label>
-                        <select class="form-select" name="skillLevel[]" required>
+                        <select class="form-select" name="skillLevel" required>
                             <option value="">Sélectionnez un niveau...</option>
                             <option value="1">Débutant</option>
                             <option value="2">Intermédiaire</option>
@@ -310,7 +307,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Langue *</label>
-                        <select class="form-select" name="languageId[]" required>
+                        <select class="form-select" name="languageId" required>
                             <option value="">Sélectionnez une langue...</option>
                             <option value="1">Français</option>
                             <option value="2">Anglais</option>
@@ -323,7 +320,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Niveau *</label>
-                        <select class="form-select" name="languageLevel[]" required>
+                        <select class="form-select" name="languageLevel" required>
                             <option value="">Sélectionnez un niveau...</option>
                             <option value="1">Débutant (A1/A2)</option>
                             <option value="2">Intermédiaire (B1/B2)</option>
@@ -335,9 +332,25 @@
             </div>
         </template>
         <script src="js/candidate/form_cv.js"></script>
-
-
-       
+        <script>
+            document.getElementById('candidateForm').addEventListener('submit', function(e) {
+                // S'assurer que tous les tableaux ont au moins une valeur vide
+                const arrayFields = ['companyName', 'position', 'startDate', 'endDate', 'jobDescription', 
+                                    'currentJob', 'skillId', 'skillLevel', 'languageId', 'languageLevel'];
+                
+                arrayFields.forEach(fieldName => {
+                    const fields = document.querySelectorAll(`[name="${fieldName}"]`);
+                    if (fields.length === 0) {
+                        // Ajouter un champ caché si aucun champ de ce type n'existe
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = fieldName;
+                        hiddenInput.value = '';
+                        this.appendChild(hiddenInput);
+                    }
+                });
+            });
+        </script>
     </div>
 </body>
 </html>

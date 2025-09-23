@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Form</title>
+</head>
+<body>
+    <h1>Test du Formulaire</h1>
+    
+    <form th:action="@{/testForm}" method="post">
+        <input type="text" name="firstName" value="Test">
+        <input type="text" name="companyName" value="Entreprise 1">
+        <input type="text" name="companyName" value="Entreprise 2">
+        <input type="number" name="skillId" value="1">
+        <input type="number" name="skillId" value="2">
+        <button type="submit">Tester</button>
+    </form>
+    
+    <hr>
+    
+    <h2>Test avec des données plus complètes :</h2>
+    <form th:action="@{/testForm}" method="post">
+        <input type="text" name="firstName" value="Jean" placeholder="Prénom"><br>
+        <input type="text" name="lastName" value="Dupont" placeholder="Nom"><br>
+        <input type="text" name="companyName" value="Google" placeholder="Entreprise 1"><br>
+        <input type="text" name="companyName" value="Microsoft" placeholder="Entreprise 2"><br>
+        <input type="text" name="position" value="Développeur" placeholder="Poste 1"><br>
+        <input type="text" name="position" value="Architecte" placeholder="Poste 2"><br>
+        <input type="number" name="skillId" value="1" placeholder="Compétence ID 1"><br>
+        <input type="number" name="skillId" value="3" placeholder="Compétence ID 2"><br>
+        <input type="number" name="skillLevel" value="2" placeholder="Niveau 1"><br>
+        <input type="number" name="skillLevel" value="3" placeholder="Niveau 2"><br>
+        <button type="submit">Tester complet</button>
+    </form>
+</body>
+</html>

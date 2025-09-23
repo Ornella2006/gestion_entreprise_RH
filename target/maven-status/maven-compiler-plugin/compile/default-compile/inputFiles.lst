@@ -1,7 +1,7 @@
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\config\AuthInterceptor.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\config\WebConfig.java
+C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\AdminController.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\AuthCandidateController.java
-C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\CandidateSkillRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\CandidatureController.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\CompanyController.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\HomeCandidateController.java
@@ -10,7 +10,9 @@ C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\co
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\PersonController.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\RecruitmentRequestController.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\StatusController.java
+C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\TestController.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\controller\UploadController.java
+C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\dto\CandidatureForm.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\GestionEntrepriseApplication.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\model\Candidate.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\model\CandidateAuth.java
@@ -54,6 +56,7 @@ C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\co
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\ExperienceRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\LanguageRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\LevelRepository.java
+C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\MatchingCandidateProjection.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\PersonRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\RecruitmentRequestRepository.java
 C:\Users\ORNELLA\Documents\S5\tovo\gestion_entreprise\demo\demo\src\main\java\com\example\gestionEntreprise\repository\RoleRepository.java

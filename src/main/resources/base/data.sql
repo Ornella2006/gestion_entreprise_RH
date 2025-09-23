@@ -360,9 +360,9 @@ CREATE TABLE Final_Selection (
 -- ----------------------
 -- Function: get_matching_candidates_dynamic
 -- ----------------------
-CREATE OR REPLACE FUNCTION get_matching_candidates_dynamic(p_idRecruitment_Request INT)
+CREATE OR REPLACE FUNCTION get_matching_candidates_dynamic(p_idrecruitment_request INT)
 RETURNS TABLE (
-    idCandidate INT,
+    idcandidate INT,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     gender VARCHAR(10),
@@ -380,9 +380,9 @@ BEGIN
             cm.table_name,
             cm.column_name,
             cm.data_type
-        FROM Recruitment_Criteria_Priority rcp
-        JOIN Criteria_Mapping cm ON rcp.criteria_type = cm.criteria_type
-        WHERE rcp.idRecruitment_Request = p_idRecruitment_Request
+        FROM recruitment_criteria_priority rcp
+        JOIN criteria_mapping cm ON rcp.criteria_type = cm.criteria_type
+        WHERE rcp.idrecruitment_request = p_idrecruitment_request
         AND rcp.is_mandatory = TRUE
     LOOP
         IF condition_text != '' THEN
@@ -393,10 +393,10 @@ BEGIN
         ELSE
             condition_text := condition_text || 
                 CASE rec.table_name
-                    WHEN 'Person' THEN 'p.' || quote_ident(rec.column_name)
-                    WHEN 'Candidate' THEN 'c.' || quote_ident(rec.column_name)
-                    WHEN 'Candidate_Skill' THEN 'cs.' || quote_ident(rec.column_name)
-                    WHEN 'Candidate_Language' THEN 'cl.' || quote_ident(rec.column_name)
+                    WHEN 'person' THEN 'p.' || quote_ident(rec.column_name)
+                    WHEN 'candidate' THEN 'c.' || quote_ident(rec.column_name)
+                    WHEN 'candidate_skill' THEN 'cs.' || quote_ident(rec.column_name)
+                    WHEN 'candidate_language' THEN 'cl.' || quote_ident(rec.column_name)
                     ELSE 'FALSE'
                 END || ' ' || rec.operator || ' ' ||
                 CASE rec.data_type
@@ -413,16 +413,16 @@ BEGIN
     END IF;
     RETURN QUERY EXECUTE '
         SELECT 
-            c.idCandidate,
+            c.idcandidate,
             p.first_name,
             p.last_name,
             p.gender,
             el.level_name
-        FROM Candidate c
-        JOIN Person p ON c.idPerson = p.idPerson
-        JOIN Education_Level el ON c.idEducation_Level = el.idEducation_Level
-        LEFT JOIN Candidate_Skill cs ON c.idCandidate = cs.idCandidate
-        LEFT JOIN Candidate_Language cl ON c.idCandidate = cl.idCandidate
+        FROM candidate c
+        JOIN person p ON c.idperson = p.idperson
+        JOIN education_level el ON c.ideducation_Level = el.ideducation_level
+        LEFT JOIN candidate_skill cs ON c.idcandidate = cs.idcandidate
+        LEFT JOIN candidate_language cl ON c.idcandidate = cl.idcandidate
         WHERE ' || condition_text;
 END;
 $$ LANGUAGE plpgsql;

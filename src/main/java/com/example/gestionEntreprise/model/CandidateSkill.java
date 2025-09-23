@@ -1,6 +1,13 @@
 package com.example.gestionEntreprise.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "candidate_skill")
@@ -8,7 +15,7 @@ public class CandidateSkill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idcandidate_skill")
-    private Integer idCandidateSkill; // Changé de Long à Integer
+    private Integer idCandidateSkill; 
 
     @ManyToOne
     @JoinColumn(name = "idcandidate")
